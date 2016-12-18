@@ -1,19 +1,19 @@
 import {inject} from 'aurelia-framework';
-import DonationService from '../../services/tweet-service';
+import TweetService from '../../services/tweet-service';
 
-@inject(DonationService)
+@inject(TweetService)
 export class Login {
 
   email = 'matthias.hartmann@mail.de';
   password = 'secret';
 
-  constructor(ds) {
-    this.donationService = ds;
+  constructor(ts) {
+    this.tweetService = ts;
     this.prompt = '';
   }
 
   login(e) {
     console.log(`Trying to log in ${this.email}`);
-    this.donationService.login(this.email, this.password);
+    this.tweetService.login(this.email, this.password);
   }
 }

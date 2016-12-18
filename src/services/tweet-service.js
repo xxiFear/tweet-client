@@ -40,9 +40,14 @@ export default class TweetService {
     this.totalTweets = this.globalTweets.length;
   }
 
-  writeNewTweet(newTweet) {
-    this.ac.post('/api/users/{id}/tweets', newTweet).then(rest => {
-      //TODO
+  postTweet(tweetContent) {
+    const tweet = {
+      message: tweetContent
+    };
+    this.ac.post('/api/tweets', tweet).then(res => {
+      this.globalTweets.push(res.content);
+      this.totalTweets = this.totalTweets + 1;
+      this.ea.publish(new TotalTweets(this.totalTweets));
     });
   }
 

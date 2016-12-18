@@ -8,16 +8,17 @@ export class Timeline {
   tweetInput = '';
 
   constructor(ts) {
-    this.ts = ts;
-    ts.getGlobalTweets();
-    this.globalTweets = ts.globalTweets;
+    this.tweetService = ts;
+    this.tweetService.getGlobalTweets();
+    this.globalTweets = this.tweetService.globalTweets;
   }
 
   writeNewTweet(event) {
     console.log(`Writing new Tweet with content: ${this.tweetInput}`);
-    this.ts.writeNewTweet(this.tweetInput);
+    this.globalTweets.push({message: this.tweetInput});
+    this.tweetService.postTweet(this.tweetInput);
+
+    console.log(`Global Tweets size here is: ${this.globalTweets.length}`);
   }
 
 }
-
-

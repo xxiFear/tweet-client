@@ -6,9 +6,9 @@ import DonationService from './services/tweet-service';
 @inject(DonationService, Aurelia, EventAggregator)
 export class App {
 
-  constructor(ds, au, ea) {
+  constructor(ts, au, ea) {
     this.au = au;
-    this.ds = ds;
+    this.ts = ts;
     ea.subscribe(LoginStatus, msg => {
       if (msg.status.success === true) {
         au.setRoot('home').then(() => {
@@ -23,7 +23,7 @@ export class App {
   }
 
   attached() {
-    if (this.ds.isAuthenticated()) {
+    if (this.ts.isAuthenticated()) {
       this.au.setRoot('home').then(() => {
         this.router.navigateToRoute('timeline');
       });

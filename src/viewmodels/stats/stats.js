@@ -2,16 +2,16 @@ import {inject} from 'aurelia-framework';
 import {TotalUsers} from '../../services/messages';
 import {TotalTweets} from '../../services/messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
-import DonationService from '../../services/tweet-service';
+import TweetService from '../../services/tweet-service';
 
-@inject(EventAggregator, DonationService)
+@inject(EventAggregator, TweetService)
 export class Stats {
 
   totalUsers = 0;
   totalTweets = 0;
 
   constructor(ea, ts) {
-    this.ts = ts;
+    this.tweetService = ts;
     ea.subscribe(TotalUsers, msg => {
       this.totalUsers = msg.users;
     });
@@ -21,9 +21,9 @@ export class Stats {
   }
 
   attached() {
-    this.total = this.ts.total;
-    this.totalUsers = this.ts.totalUsers;
-    this.totalTweets = this.ts.totalTweets;
+    this.total = this.tweetService.total;
+    this.totalUsers = this.tweetService.totalUsers;
+    this.totalTweets = this.tweetService.totalTweets;
   }
 
 }

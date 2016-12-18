@@ -2,17 +2,19 @@
 
   <require from="utils/date-format"></require>
 
-  <form submit.delegate="writeNewTweet($event)" class="ui segments form">
+  <form name="shareForm" submit.delegate="writeNewTweet($event)" class="ui segments form">
     <div class="ui segment">
       <p>Todo angemeldeter Nutzer</p>
     </div>
     <div class="ui segment">
       <div class="ui fluid action input">
         <input placeholder="Share whatever you like" value.bind="tweetInput">
-        <button class="ui button">Share</button>
+        <button name="shareButton"  class="ui button">Share</button>
       </div>
     </div>
   </form>
+
+
 
   <section class="ui grid center aligned segment">
 
@@ -90,3 +92,4 @@
   </form>-->
 
 </template>
+
