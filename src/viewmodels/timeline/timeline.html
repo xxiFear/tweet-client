@@ -1,0 +1,92 @@
+<template>
+
+  <require from="utils/date-format"></require>
+
+  <form submit.delegate="writeNewTweet($event)" class="ui segments form">
+    <div class="ui segment">
+      <p>Todo angemeldeter Nutzer</p>
+    </div>
+    <div class="ui segment">
+      <div class="ui fluid action input">
+        <input placeholder="Share whatever you like" value.bind="tweetInput">
+        <button class="ui button">Share</button>
+      </div>
+    </div>
+  </form>
+
+  <section class="ui grid center aligned segment">
+
+    <div class="row" repeat.for="tweet of globalTweets">
+
+      <div class="thirteen wide column">
+        <div class="ui padded raised center aligned segment">
+          <div class="ui internally celled grid">
+            <div class="row">
+              <div class="five wide column">
+                <div class="ui center aligned">
+                  <i class="circular pencil icon"></i>
+                  <a class="user">
+                    ${tweet.author.firstName} ${tweet.author.lastName}
+                  </a>
+                </div>
+
+                posted on
+
+                <div class="date">
+                  ${tweet.time | dateFormat}
+                </div>
+              </div>
+
+
+              <div class="ten wide column">
+                <div class="extra text">
+                  ${tweet.message}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </section>
+
+
+  <!--<form submit.trigger="makeDonation()" class="ui form stacked segment">
+    &lt;!&ndash;TODO&ndash;&gt;
+    <h3 class='ui dividing header'> Make a Donation </h3>
+    <div class="grouped inline fields">
+      <div class="field">
+        <label>Amount</label> <input type="number" value.bind="amount">
+      </div>
+    </div>
+
+    <h4 class="ui dividing header"> Select Method </h4>
+    <div class="grouped inline fields">
+
+      <div class="field" repeat.for="method of methods">
+        <div class="ui radio checkbox">
+          <input type="radio" model.bind="method" checked.bind="selectedMethod">
+          <label>${method}</label>
+        </div>
+      </div>
+      <label class="ui circular label"> ${selectedMethod} </label>
+    </div>
+
+    <h4 class="ui dividing header"> Select Candidate </h4>
+    <div class="grouped inline fields">
+      <div class="field" repeat.for="candidate of candidates">
+        <div class="ui radio checkbox">
+          <input type="radio" model.bind="candidate" checked.bind="selectedCandidate">
+          <label>${candidate.lastName}, ${candidate.firstName}</label>
+        </div>
+      </div>
+      <label class="ui circular label"> ${selectedCandidate.firstName} ${selectedCandidate.lastName}</label>
+    </div>
+
+    <button class="ui blue submit button">Donate</button>
+
+  </form>-->
+
+</template>
