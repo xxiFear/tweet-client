@@ -6,15 +6,17 @@ import {TotalUsers} from './messages';
 import {TotalTweets} from './messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {TotalTweetsUpdatedMessage} from './messages';
+import {SelectedUserUpdatedMessage} from './messages';
+
 
 @inject(Fixtures, EventAggregator, AsyncHttpClient)
 export default class TweetService {
 
   totalTweets = 0;
   totalUsers = 0;
-  globalTweets = [];
   tweets = [];
   users = [];
+  selectedUser = [];
 
   constructor(data, ea, ac) {
     this.methods = data.methods;
@@ -25,21 +27,37 @@ export default class TweetService {
   getTweetsFromUser(userId) {
     this.ac.get('/api/users/' + userId + '/tweets').then(res => {
       this.tweets = res.content;
+      this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
+    });
+  }
+
+  deleteSingleTweet(tweetId) {
+    this.ac.delete('/api/tweets/' + tweetId).then(res => {
+      this.getGlobalTweets();
+      this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
     });
   }
 
   getAllUsers() {
     this.ac.get('/api/users').then(res => {
       this.users = res.content;
+      this.totalUsers = this.users.length;
+      this.ea.publish(new TotalUsers(this.totalUsers));
     });
-    this.totalUsers = this.users.length;
+  }
+
+  getSingleUser(userId) {
+    this.ac.get('/api/users/' + userId).then(res => {
+      this.selectedUser = res.content;
+      this.ea.publish(new SelectedUserUpdatedMessage(this.selectedUser));
+    });
   }
 
   getGlobalTweets() {
     this.ac.get('/api/tweets').then(res => {
-      this.globalTweets =  res.content;
-      this.ea.publish(new TotalTweetsUpdatedMessage(this.globalTweets));
-      this.totalTweets = this.globalTweets.length;
+      this.tweets =  res.content;
+      this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
+      this.totalTweets = this.tweets.length;
       this.ea.publish(new TotalTweets(this.totalTweets));
     });
   }
@@ -49,10 +67,10 @@ export default class TweetService {
       message: tweetContent
     };
     this.ac.post('/api/tweets', tweet).then(res => {
-      this.globalTweets.push(res.content);
+      this.tweets.unshift(res.content);
       this.totalTweets = this.totalTweets + 1;
       this.ea.publish(new TotalTweets(this.totalTweets));
-      return res.content;
+      this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
     });
   }
 

@@ -27,3 +27,9 @@ export class TotalTweetsUpdatedMessage {
     this.totalTweets = tweets;
   }
 }
+
+export class SelectedUserUpdatedMessage {
+  constructor(user) {
+    this.selectedUser = user;
+  }
+}

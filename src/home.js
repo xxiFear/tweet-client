@@ -44,6 +44,13 @@ export class Home {
         moduleId: 'viewmodels/logout/logout',
         nav: true,
         title: 'Logout'
+      },
+      {
+        route: 'userDetail/:id',
+        name: 'userDetail',
+        moduleId: 'viewmodels/user/user',
+        nav: false,
+        title: 'User'
       }
     ]);
 

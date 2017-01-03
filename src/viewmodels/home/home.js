@@ -10,5 +10,10 @@ export class Home {
     this.tweetService = ts;
   }
 
+  activate() {
+    this.tweetService.getAllUsers();
+    this.tweetService.getGlobalTweets();
+  }
+
 
 }

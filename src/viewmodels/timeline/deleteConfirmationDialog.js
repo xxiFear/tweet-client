@@ -1,12 +1,15 @@
 import {DialogController} from 'aurelia-dialog';
+import TweetService from '../../services/tweet-service';
+import {inject} from 'aurelia-framework';
 
+@inject(DialogController, TweetService)
 export class DeleteConfirmationDialog {
-  static inject = [DialogController];
 
   tweet = { message: '' };
 
-  constructor(controller) {
+  constructor(controller, tweetService) {
     this.controller = controller;
+    this.tweetService = tweetService;
   }
 
   activate(tweet) {
@@ -14,7 +17,7 @@ export class DeleteConfirmationDialog {
   }
 
   deleteTweet(tweet) {
-    //Todo Api Operation
+    this.tweetService.deleteSingleTweet(this.tweet._id);
     this.controller.ok(tweet);
   }
 }

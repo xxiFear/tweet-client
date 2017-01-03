@@ -38,19 +38,19 @@
                   ${tweet.time | dateFormat}
                 </div>
 
-                <a route-href="route: timeline;
+                <a class="ui icon button" route-href="route: timeline;
                                    params.bind: {id:tweet.author._id}">
                   <i class="fa fa-comments" title="Show ${tweet.author.firstName}'s comments only"></i>
                 </a>
 
                 <!--Todo Profile page-->
-                <!--<a route-href="route: timeline;-->
-                                   <!--params.bind: {id:tweet.author._id}">-->
+                <a class="ui icon button" route-href="route: userDetail;
+                                   params.bind: {id:tweet.author._id}">
                   <i class="fa fa-user" title="Show ${tweet.author.firstName}'s profile"></i>
                 </a>
 
 
-                <button type="button" click.trigger="showConfirmationDialog(tweet)">
+                <button class="negative ui icon button" type="button" click.trigger="showConfirmationDialog(tweet)">
                   <i class="fa fa-trash" title="Delete this comment"></i>
                 </button>
 
