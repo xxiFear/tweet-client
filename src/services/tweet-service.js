@@ -5,6 +5,7 @@ import {LoginStatus} from './messages';
 import {TotalUsers} from './messages';
 import {TotalTweets} from './messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
+import {TotalTweetsUpdatedMessage} from './messages';
 
 @inject(Fixtures, EventAggregator, AsyncHttpClient)
 export default class TweetService {
@@ -12,6 +13,7 @@ export default class TweetService {
   totalTweets = 0;
   totalUsers = 0;
   globalTweets = [];
+  tweets = [];
   users = [];
 
   constructor(data, ea, ac) {
@@ -21,7 +23,7 @@ export default class TweetService {
   }
 
   getTweetsFromUser(userId) {
-    this.ac.get('/api/tweets/' + userId).then(res => {
+    this.ac.get('/api/users/' + userId + '/tweets').then(res => {
       this.tweets = res.content;
     });
   }
@@ -36,8 +38,10 @@ export default class TweetService {
   getGlobalTweets() {
     this.ac.get('/api/tweets').then(res => {
       this.globalTweets =  res.content;
+      this.ea.publish(new TotalTweetsUpdatedMessage(this.globalTweets));
+      this.totalTweets = this.globalTweets.length;
+      this.ea.publish(new TotalTweets(this.totalTweets));
     });
-    this.totalTweets = this.globalTweets.length;
   }
 
   postTweet(tweetContent) {
@@ -48,6 +52,7 @@ export default class TweetService {
       this.globalTweets.push(res.content);
       this.totalTweets = this.totalTweets + 1;
       this.ea.publish(new TotalTweets(this.totalTweets));
+      return res.content;
     });
   }
 

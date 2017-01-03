@@ -1,9 +1,9 @@
 import {inject, Aurelia} from 'aurelia-framework';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {LoginStatus} from './services/messages';
-import DonationService from './services/tweet-service';
+import TweetService from './services/tweet-service';
 
-@inject(DonationService, Aurelia, EventAggregator)
+@inject(TweetService, Aurelia, EventAggregator)
 export class App {
 
   constructor(ts, au, ea) {
@@ -12,7 +12,7 @@ export class App {
     ea.subscribe(LoginStatus, msg => {
       if (msg.status.success === true) {
         au.setRoot('home').then(() => {
-          this.router.navigateToRoute('timeline');
+          this.router.navigateToRoute('home');
         });
       } else {
         au.setRoot('app').then(() => {
@@ -25,7 +25,7 @@ export class App {
   attached() {
     if (this.ts.isAuthenticated()) {
       this.au.setRoot('home').then(() => {
-        this.router.navigateToRoute('timeline');
+        this.router.navigateToRoute('home');
       });
     }
   }

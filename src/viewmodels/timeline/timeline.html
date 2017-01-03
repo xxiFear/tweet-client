@@ -26,18 +26,37 @@
             <div class="row">
               <div class="five wide column">
                 <div class="ui center aligned">
-                  <i class="circular pencil icon"></i>
+
                   <a class="user">
                     ${tweet.author.firstName} ${tweet.author.lastName}
                   </a>
                 </div>
-
+                <!--<i class="circular pencil icon"></i>-->
                 posted on
 
                 <div class="date">
                   ${tweet.time | dateFormat}
                 </div>
+
+                <a route-href="route: timeline;
+                                   params.bind: {id:tweet.author._id}">
+                  <i class="fa fa-comments" title="Show ${tweet.author.firstName}'s comments only"></i>
+                </a>
+
+                <!--Todo Profile page-->
+                <!--<a route-href="route: timeline;-->
+                                   <!--params.bind: {id:tweet.author._id}">-->
+                  <i class="fa fa-user" title="Show ${tweet.author.firstName}'s profile"></i>
+                </a>
+
+
+                <button type="button" click.trigger="showConfirmationDialog(tweet)">
+                  <i class="fa fa-trash" title="Delete this comment"></i>
+                </button>
+
               </div>
+
+
 
 
               <div class="ten wide column">
@@ -45,6 +64,7 @@
                   ${tweet.message}
                 </div>
               </div>
+
             </div>
           </div>
         </div>

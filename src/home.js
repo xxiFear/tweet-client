@@ -9,14 +9,46 @@ export class Home {
 
   configureRouter(config, router) {
     config.map([
-      { route: ['', 'home'], name: 'timeline', moduleId: 'viewmodels/timeline/timeline', nav: true, title: 'Global Timeline' },
-      { route: 'stats', name: 'stats', moduleId: 'viewmodels/stats/stats', nav: true, title: 'Stats' },
-      { route: 'dashboard', name: 'dashboard', moduleId: 'viewmodels/dashboard/dashboard', nav: true, title: 'Dashboard' },
-      { route: 'logout', name: 'logout', moduleId: 'viewmodels/logout/logout', nav: true, title: 'Logout' }
+      {
+        route: ['', 'home'],
+        name: 'Home',
+        moduleId: 'viewmodels/home/home',
+        nav: true,
+        title: 'Home'
+      },
+      {
+        route: 'timeline/:id?',
+        name: 'timeline',
+        moduleId: 'viewmodels/timeline/timeline',
+        nav: true,
+        title: 'Timeline',
+        href: 'timeline'
+      },
+      {
+        route: 'stats',
+        name: 'stats',
+        moduleId: 'viewmodels/stats/stats',
+        nav: true,
+        title: 'Stats'
+      },
+      {
+        route: 'dashboard',
+        name: 'dashboard',
+        moduleId: 'viewmodels/dashboard/dashboard',
+        nav: true,
+        title: 'Dashboard'
+      },
+      {
+        route: 'logout',
+        name: 'logout',
+        moduleId: 'viewmodels/logout/logout',
+        nav: true,
+        title: 'Logout'
+      }
     ]);
 
     config.mapUnknownRoutes(instruction => {
-      return 'dashboard';
+      return 'home';
     });
 
     this.router = router;

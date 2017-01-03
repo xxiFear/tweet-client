@@ -11,9 +11,9 @@ Promise.config({
 export function configure(aurelia) {
   aurelia.use
     .standardConfiguration()
-    .feature('resources');
+    .feature('resources')
+    .plugin('aurelia-dialog');
 
-  // aurelia.globalizeResources('./utils/date-format');
   if (environment.debug) {
     aurelia.use.developmentLogging();
   }
