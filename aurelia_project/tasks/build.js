@@ -4,13 +4,15 @@ import processMarkup from './process-markup';
 import processCSS from './process-css';
 import {build} from 'aurelia-cli';
 import project from '../aurelia.json';
+import prepareFontAwesome from './prepare-font-awesome'; // Custom task - prepare font awesome
 
 export default gulp.series(
   readProjectConfiguration,
   gulp.parallel(
     transpile,
     processMarkup,
-    processCSS
+    processCSS,
+    prepareFontAwesome // Custom Task for font awesome
   ),
   writeBundles
 );
