@@ -43,9 +43,31 @@ export class Timeline {
     });
   }
 
+  followUser(userToFollow) {
+    console.log(`Following user: ${userToFollow.firstName}`);
+    this.tweetService.followUser(userToFollow);
+  }
+
+  unfollowUser(userToUnfollow) {
+    console.log(`Unfollowing user: ${userToUnfollow.firstName}`);
+    this.tweetService.unfollowUser(userToUnfollow);
+  }
+
   writeNewTweet(event) {
     console.log(`Writing new Tweet with content: ${this.tweetInput}`);
     this.tweetService.postTweet(this.tweetInput);
+  }
+
+  canFollow(user) {
+    return this.tweetService.canFollow(user);
+  }
+
+  canUnfollow(user) {
+    return this.tweetService.canUnfollow(user);
+  }
+
+  canDeleteTweet(tweet) {
+    return this.tweetService.canDeleteTweet(tweet);
   }
 
 }

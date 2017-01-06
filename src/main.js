@@ -1,4 +1,5 @@
 import environment from './environment';
+import config from './authConfig';
 
 //Configure Bluebird Promises.
 //Note: You may want to use environment-specific configuration.
@@ -13,6 +14,9 @@ export function configure(aurelia) {
     .standardConfiguration()
     .feature('resources')
     .plugin('aurelia-dialog');
+    // .plugin('aurelia-auth', (baseConfig)=>{
+    //   baseConfig.configure(config);
+    // });
 
   if (environment.debug) {
     aurelia.use.developmentLogging();

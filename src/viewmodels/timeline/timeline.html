@@ -27,9 +27,22 @@
               <div class="five wide column">
                 <div class="ui center aligned">
 
-                  <a class="user">
-                    ${tweet.author.firstName} ${tweet.author.lastName}
-                  </a>
+                  <div class="ui card">
+                    <a class="image" if.bind="tweet.author.gender == 'Female'">
+                      <img src="/src/assets/avatars/kristy.png">
+                    </a>
+                    <a class="image" if.bind="tweet.author.gender == 'Male'">
+                      <img src="/src/assets/avatars/christian.jpg">
+                    </a>
+                    <div class="content">
+                      <a class="header" route-href="route: userDetail;
+                                   params.bind: {id:tweet.author._id}">${tweet.author.firstName} ${tweet.author.lastName}</a>
+                      <!--<div class="meta">-->
+                        <!--<a>Last Seen 2 days ago</a>-->
+                      <!--</div>-->
+                    </div>
+                  </div>
+
                 </div>
                 <!--<i class="circular pencil icon"></i>-->
                 posted on
@@ -38,19 +51,18 @@
                   ${tweet.time | dateFormat}
                 </div>
 
-                <a class="ui icon button" route-href="route: timeline;
+                <button class="ui icon button" route-href="route: timeline;
                                    params.bind: {id:tweet.author._id}">
                   <i class="fa fa-comments" title="Show ${tweet.author.firstName}'s comments only"></i>
-                </a>
+                </button>
+                <button class="positive ui icon button" disabled.bind="!canFollow(tweet.author)" click.trigger="followUser(tweet.author)">
+                  <i class="add user icon" title="Follow ${tweet.author.firstName}"></i>
+                </button>
+                <button class="negative ui icon button" disabled.bind="!canUnfollow(tweet.author)" click.trigger="unfollowUser(tweet.author)">
+                  <i class="remove user icon" title="Unfollow ${tweet.author.firstName}"></i>
+                </button>
 
-                <!--Todo Profile page-->
-                <a class="ui icon button" route-href="route: userDetail;
-                                   params.bind: {id:tweet.author._id}">
-                  <i class="fa fa-user" title="Show ${tweet.author.firstName}'s profile"></i>
-                </a>
-
-
-                <button class="negative ui icon button" type="button" click.trigger="showConfirmationDialog(tweet)">
+                <button class="negative ui icon button" disabled.bind="!canDeleteTweet(tweet)" type="button" click.trigger="showConfirmationDialog(tweet)">
                   <i class="fa fa-trash" title="Delete this comment"></i>
                 </button>
 
@@ -73,43 +85,5 @@
 
     </div>
   </section>
-
-
-  <!--<form submit.trigger="makeDonation()" class="ui form stacked segment">
-    &lt;!&ndash;TODO&ndash;&gt;
-    <h3 class='ui dividing header'> Make a Donation </h3>
-    <div class="grouped inline fields">
-      <div class="field">
-        <label>Amount</label> <input type="number" value.bind="amount">
-      </div>
-    </div>
-
-    <h4 class="ui dividing header"> Select Method </h4>
-    <div class="grouped inline fields">
-
-      <div class="field" repeat.for="method of methods">
-        <div class="ui radio checkbox">
-          <input type="radio" model.bind="method" checked.bind="selectedMethod">
-          <label>${method}</label>
-        </div>
-      </div>
-      <label class="ui circular label"> ${selectedMethod} </label>
-    </div>
-
-    <h4 class="ui dividing header"> Select Candidate </h4>
-    <div class="grouped inline fields">
-      <div class="field" repeat.for="candidate of candidates">
-        <div class="ui radio checkbox">
-          <input type="radio" model.bind="candidate" checked.bind="selectedCandidate">
-          <label>${candidate.lastName}, ${candidate.firstName}</label>
-        </div>
-      </div>
-      <label class="ui circular label"> ${selectedCandidate.firstName} ${selectedCandidate.lastName}</label>
-    </div>
-
-    <button class="ui blue submit button">Donate</button>
-
-  </form>-->
-
 </template>
 

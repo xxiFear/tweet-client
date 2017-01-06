@@ -7,7 +7,8 @@ import {TotalTweets} from './messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {TotalTweetsUpdatedMessage} from './messages';
 import {SelectedUserUpdatedMessage} from './messages';
-
+import {AuthenticatedUserUpdatedMessage} from './messages';
+import _ from 'lodash';
 
 @inject(Fixtures, EventAggregator, AsyncHttpClient)
 export default class TweetService {
@@ -16,12 +17,16 @@ export default class TweetService {
   totalUsers = 0;
   tweets = [];
   users = [];
-  selectedUser = [];
+  selectedUser = {};
+  authenticatedUser = {};
 
   constructor(data, ea, ac) {
     this.methods = data.methods;
     this.ea = ea;
     this.ac = ac;
+    this.ea.subscribe(AuthenticatedUserUpdatedMessage, message => {
+      this.authenticatedUser = message.authenticatedUser;
+    });
   }
 
   getTweetsFromUser(userId) {
@@ -48,8 +53,17 @@ export default class TweetService {
 
   getSingleUser(userId) {
     this.ac.get('/api/users/' + userId).then(res => {
+      let user = res.content;
+      this.selectedUser = user;
+      this.ea.publish(new SelectedUserUpdatedMessage(this.selectedUser));
+    });
+  }
+
+  saveSingleUser(user) {
+    this.ac.post('/api/users', user).then(res => {
       this.selectedUser = res.content;
       this.ea.publish(new SelectedUserUpdatedMessage(this.selectedUser));
+      this.ea.publish(new AuthenticatedUserUpdatedMessage(this.authenticatedUser));
     });
   }
 
@@ -73,6 +87,32 @@ export default class TweetService {
       this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
     });
   }
+
+  getAuthenticatedUser() {
+    this.ac.get('/api/users/authenticated').then(res => {
+      const user = res.content;
+      this.authenticatedUser = user;
+      this.ea.publish(new AuthenticatedUserUpdatedMessage(this.authenticatedUser));
+    });
+  }
+
+  followUser(userToFollow) {
+    this.ac.post('/api/friendships/follow', userToFollow).then(res => {
+      this.authenticatedUser.following.push(userToFollow._id);
+      this.getGlobalTweets();
+    });
+  }
+
+  unfollowUser(userToUnfollow) {
+    this.ac.post('/api/friendships/unfollow', userToUnfollow).then(res => {
+      let index = this.authenticatedUser.following.indexOf(userToUnfollow._id);
+      if (index > -1) {
+        this.authenticatedUser.following.splice(index, 1);
+      }
+      this.getGlobalTweets();
+    });
+  }
+
 
   register(firstName, lastName, email, password) {
     const newUser = {
@@ -101,7 +141,51 @@ export default class TweetService {
     this.ea.publish(new LoginStatus(status));
   }
 
+  //Permission based methods
+
   isAuthenticated() {
     return this.ac.isAuthenticated();
+  }
+
+  canDeleteTweet(tweet) {
+    if (tweet.author._id === this.authenticatedUser._id || this.hasPermission('admin')) {
+      return true;
+    }
+    return false;
+  }
+
+  canDeleteUser(user) {
+    if (this.hasPermission('admin')) {
+      return true;
+    }
+    return false;
+  }
+
+  canEditUser(user) {
+    if (this.authenticatedUser._id === user._id || this.hasPermission('admin')) {
+      return true;
+    }
+    return false;
+  }
+
+  canFollow(user) {
+    if (user._id !== this.authenticatedUser._id && !_.includes(this.authenticatedUser.following, user._id)) {
+      return true;
+    }
+    return false;
+  }
+
+  canUnfollow(user) {
+    if (user._id !== this.authenticatedUser._id && _.includes(this.authenticatedUser.following, user._id)) {
+      return true;
+    }
+    return false;
+  }
+
+  hasPermission(permission) {
+    if (this.authenticatedUser.role === permission) {
+      return true;
+    }
+    return false;
   }
 }

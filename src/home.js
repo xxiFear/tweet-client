@@ -22,7 +22,7 @@ export class Home {
         moduleId: 'viewmodels/timeline/timeline',
         nav: true,
         title: 'Timeline',
-        href: 'timeline'
+        href: '/timeline'
       },
       {
         route: 'stats',
@@ -37,6 +37,13 @@ export class Home {
         moduleId: 'viewmodels/dashboard/dashboard',
         nav: true,
         title: 'Dashboard'
+      },
+      {
+        route: 'myprofile',
+        name: 'myprofile',
+        moduleId: 'viewmodels/myprofile/myprofile',
+        nav: true,
+        title: 'My Profile'
       },
       {
         route: 'logout',

@@ -33,3 +33,9 @@ export class SelectedUserUpdatedMessage {
     this.selectedUser = user;
   }
 }
+
+export class AuthenticatedUserUpdatedMessage {
+  constructor(user) {
+    this.authenticatedUser = user;
+  }
+}

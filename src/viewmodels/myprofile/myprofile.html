@@ -6,25 +6,25 @@
     <div class="row">
       <div class="five wide centered column">
         <div class="ui card">
-          <div class="image" if.bind="selectedUser.gender == 'Female'">
+          <div class="image" if.bind="authenticatedUser.gender == 'Female'">
             <img src="/src/assets/avatars/kristy.png">
           </div>
-          <div class="image" if.bind="selectedUser.gender == 'Male'">
+          <div class="image" if.bind="authenticatedUser.gender == 'Male'">
             <img src="/src/assets/avatars/christian.jpg">
           </div>
           <div class="content">
-            <a class="header">${selectedUser.firstName}</a>
+            <a class="header">${authenticatedUser.firstName}</a>
             <div class="meta">
-              <span class="date">Joined in ${selectedUser.joined | dateFormat}</span>
+              <span class="date">Joined in ${authenticatedUser.joined | dateFormat}</span>
             </div>
             <div class="description">
-              ${selectedUser.description}
+              ${authenticatedUser.description}
             </div>
           </div>
           <div class="extra content">
             <a>
               <i class="user icon"></i>
-              Following: ${selectedUser.following.length}
+              Following: ${authenticatedUser.following.length}
             </a>
           </div>
         </div>
@@ -39,27 +39,27 @@
           <div class="two fields">
             <div class="field">
               <label>First Name</label>
-              <input placeholder="First Name" value.bind="selectedUser.firstName"
-                     disabled.bind="!canEditUser(selectedUser)" name="firstname" type="text">
+              <input placeholder="First Name" value.bind="authenticatedUser.firstName"
+                     disabled.bind="!canEditUser(authenticatedUser)" name="firstname" type="text">
             </div>
             <div class="field">
               <label>Last Name</label>
-              <input placeholder="Last Name" value.bind="selectedUser.lastName"
-                     disabled.bind="!canEditUser(selectedUser)" name="lastname" type="text">
+              <input placeholder="Last Name" value.bind="authenticatedUser.lastName"
+                     disabled.bind="!canEditUser(authenticatedUser)" name="lastname" type="text">
             </div>
           </div>
 
           <div class="two fields">
             <div class="field">
               <label>Email</label>
-              <input placeholder="Email" readonly="" value.bind="selectedUser.email"
-                     disabled.bind="!canEditUser(selectedUser)" name="mail" type="text">
+              <input placeholder="Email" readonly="" value.bind="authenticatedUser.email"
+                     disabled.bind="!canEditUser(authenticatedUser)" name="mail" type="text">
             </div>
 
 
             <div class="field">
               <label>Gender</label>
-              <select class="ui dropdown" value.bind="selectedUser.gender" disabled.bind="!canEditUser(selectedUser)">
+              <select class="ui dropdown" value.bind="authenticatedUser.gender" disabled.bind="!canEditUser(authenticatedUser)">
                 <option repeat.for="gender of genders"
                         model.bind="gender">
                   ${gender}
@@ -70,11 +70,11 @@
 
           <div class="field">
             <label>Password</label>
-            <input name="password" type="password" value.bind="selectedUser.password" disabled.bind="!canEditUser(selectedUser)">
+            <input name="password" type="password" value.bind="authenticatedUser.password" disabled.bind="!canEditUser(authenticatedUser)">
           </div>
 
 
-          <button class="ui primary submit button" if.bind="canEditUser(selectedUser)">Submit</button>
+          <button class="ui primary submit button" if.bind="canEditUser(authenticatedUser)">Submit</button>
           <div class="ui error message"></div>
         </form>
       </div>

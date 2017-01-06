@@ -13,6 +13,7 @@ export class Home {
   activate() {
     this.tweetService.getAllUsers();
     this.tweetService.getGlobalTweets();
+    this.tweetService.getAuthenticatedUser();
   }
 
 
