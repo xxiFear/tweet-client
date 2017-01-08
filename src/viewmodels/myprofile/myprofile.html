@@ -7,9 +7,15 @@
       <div class="five wide centered column">
         <div class="ui card">
           <div class="image" if.bind="authenticatedUser.gender == 'Female'">
+            <div if.bind="hasPermission(authenticatedUser, 'admin')" class="ui red ribbon label">
+              <i class="fa fa-user-md"></i> Admin
+            </div>
             <img src="/src/assets/avatars/kristy.png">
           </div>
           <div class="image" if.bind="authenticatedUser.gender == 'Male'">
+            <div if.bind="hasPermission(authenticatedUser, 'admin')" class="ui red ribbon label">
+              <i class="fa fa-user-md"></i> Admin
+            </div>
             <img src="/src/assets/avatars/christian.jpg">
           </div>
           <div class="content">
@@ -22,10 +28,16 @@
             </div>
           </div>
           <div class="extra content">
-            <a>
+            <a route-href="route: following;
+                             params.bind: {id:authenticatedUser._id}">
               <i class="user icon"></i>
               Following: ${authenticatedUser.following.length}
             </a>
+
+            <!--<a>-->
+            <!--<i class="user icon"></i>-->
+            <!--Following: ${selectedUser.following.length}-->
+            <!--</a>-->
           </div>
         </div>
       </div>
@@ -49,6 +61,24 @@
             </div>
           </div>
 
+          <div class="field">
+            <label>Gender</label>
+            <select class="ui dropdown" value.bind="authenticatedUser.gender"
+                    disabled.bind="!canEditUser(authenticatedUser)">
+              <option repeat.for="gender of genders"
+                      model.bind="gender">
+                ${gender}
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Description</label>
+            <input name="description" type="text" value.bind="authenticatedUser.description"
+                   disabled.bind="!canEditUser(authenticatedUser)">
+          </div>
+
+
           <div class="two fields">
             <div class="field">
               <label>Email</label>
@@ -58,19 +88,10 @@
 
 
             <div class="field">
-              <label>Gender</label>
-              <select class="ui dropdown" value.bind="authenticatedUser.gender" disabled.bind="!canEditUser(authenticatedUser)">
-                <option repeat.for="gender of genders"
-                        model.bind="gender">
-                  ${gender}
-                </option>
-              </select>
+              <label>Password</label>
+              <input name="password" type="password" value.bind="authenticatedUser.password"
+                     disabled.bind="!canEditUser(authenticatedUser)">
             </div>
-          </div>
-
-          <div class="field">
-            <label>Password</label>
-            <input name="password" type="password" value.bind="authenticatedUser.password" disabled.bind="!canEditUser(authenticatedUser)">
           </div>
 
 

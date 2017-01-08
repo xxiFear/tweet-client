@@ -2,21 +2,69 @@
 
   <require from="utils/date-format"></require>
 
-  <form name="shareForm" submit.delegate="writeNewTweet($event)" class="ui segments form">
-    <div class="ui segment">
-      <p>Todo angemeldeter Nutzer</p>
-    </div>
-    <div class="ui segment">
-      <div class="ui fluid action input">
-        <input placeholder="Share whatever you like" value.bind="tweetInput">
-        <button name="shareButton"  class="ui button">Share</button>
+  <div class="ui fluid raised card">
+    <form submit.trigger="postTweet()" class="ui form" id="tweetForm" enctype='multipart/form-data'>
+      <div class="ui fluid raised card">
+        <div class="extra content">
+          <div class="left floated author">
+            <img if.bind="authenticatedUser.gender === 'Female'" src="/src/assets/avatars/kristy.png" class="ui avatar image">
+            <img if.bind="authenticatedUser.gender === 'Male'" src="/src/assets/avatars/christian.jpg" class="ui avatar image">
+            ${authenticatedUser.firstName} ${authenticatedUser.lastName}
+          </div>
+          <div class="right floated">
+            <div class="ui icon button" id="camerabutton">
+              <i class="camera icon"></i></div>
+            <button class="ui blue submit button">Share</button>
+          </div>
+        </div>
+        <div class="ui content">
+          <div class="description">
+            <div class="ui basic segment" id="imageSegment" style="display:none">
+              <img class="ui fluid rounded image" id="imagePreview" src="">
+            </div>
+            <div class="ui fluid input">
+              <input type="text" name="tweetInput" placeholder="Share your thoughts" value.bind="tweetInput">
+            </div>
+            <div class="field">
+              <input type="file" name="tweetImage" id="fileInput" accept="image/*" files.bind="tweetImage"  style="display:none">
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <section id="menuSegment" class="ui center aligned grid">
+    <div class="equal width row">
+      <div class="column">
+        <button if.bind="!tweetDeletionModeToggled" class="ui negative button"
+                click.trigger="toggleTweetDeletionMode()">
+          <i class="icon remove user"></i>
+          Toggle bulk tweet delete
+        </button>
+        <div if.bind="tweetDeletionModeToggled" class="ui buttons">
+          <button class="ui button" click.trigger="toggleTweetDeletionMode()">Cancel</button>
+          <div class="or"></div>
+          <button class="ui negative button">Delete selected tweets</button>
+        </div>
+      </div>
+      <div class="column">
+        <button if.bind="!userDeletionModeToggled" class="ui negative button" click.trigger="toggleUserDeletionMode()">
+          <i class="icon remove user"></i>
+          Toggle bulk user delete
+        </button>
+        <div if.bind="userDeletionModeToggled" class="ui buttons">
+          <button class="ui button" click.trigger="toggleUserDeletionMode()">Cancel</button>
+          <div class="or"></div>
+          <button class="ui negative button">Delete selected users</button>
+        </div>
       </div>
     </div>
-  </form>
+  </section>
 
 
 
-  <section class="ui grid center aligned segment">
+  <section class="ui raised grid center aligned segment">
 
     <div class="row" repeat.for="tweet of globalTweets">
 
@@ -26,12 +74,25 @@
             <div class="row">
               <div class="five wide column">
                 <div class="ui center aligned">
-
                   <div class="ui card">
                     <a class="image" if.bind="tweet.author.gender == 'Female'">
+                      <div if.bind="hasPermission(tweet.author, 'admin')" class="ui red ribbon label">
+                        <i class="fa fa-user-md"></i> Admin
+                      </div>
+                      <div if.bind="userDeletionModeToggled && canDeleteUser(tweet.author)" class="ui fitted checkbox">
+                        <input name="example" value.bind="tweet.deleteSelected" type="checkbox">
+                        <label></label>
+                      </div>
                       <img src="/src/assets/avatars/kristy.png">
                     </a>
                     <a class="image" if.bind="tweet.author.gender == 'Male'">
+                      <div if.bind="hasPermission(tweet.author, 'admin')" class="ui red ribbon label">
+                        <i class="fa fa-user-md"></i> Admin
+                      </div>
+                      <div if.bind="userDeletionModeToggled && canDeleteUser(tweet.author)" class="ui fitted checkbox">
+                        <input name="example" value.bind="tweet.author.deleteSelected" type="checkbox">
+                        <label></label>
+                      </div>
                       <img src="/src/assets/avatars/christian.jpg">
                     </a>
                     <div class="content">
@@ -51,14 +112,14 @@
                   ${tweet.time | dateFormat}
                 </div>
 
-                <button class="ui icon button" route-href="route: timeline;
+                <a class="ui icon button" route-href="route: timeline;
                                    params.bind: {id:tweet.author._id}">
-                  <i class="fa fa-comments" title="Show ${tweet.author.firstName}'s comments only"></i>
-                </button>
-                <button class="positive ui icon button" disabled.bind="!canFollow(tweet.author)" click.trigger="followUser(tweet.author)">
+                  <i class="fa fa-comments" title="Show ${tweet.author.firstName}'s timeline"></i>
+                </a>
+                <button class="positive ui icon button" if.bind="canFollow(tweet.author)" click.trigger="followUser(tweet.author)">
                   <i class="add user icon" title="Follow ${tweet.author.firstName}"></i>
                 </button>
-                <button class="negative ui icon button" disabled.bind="!canUnfollow(tweet.author)" click.trigger="unfollowUser(tweet.author)">
+                <button class="negative ui icon button" if.bind="canUnfollow(tweet.author)" click.trigger="unfollowUser(tweet.author)">
                   <i class="remove user icon" title="Unfollow ${tweet.author.firstName}"></i>
                 </button>
 
@@ -68,17 +129,24 @@
 
               </div>
 
-
-
-
               <div class="ten wide column">
+                <div if.bind="tweet.imagePath" class="ui basic segment">
+                  <img class="ui fluid rounded image" src="${tweet.imagePath}">
+                </div>
                 <div class="extra text">
                   ${tweet.message}
                 </div>
+
               </div>
 
             </div>
           </div>
+        </div>
+      </div>
+      <div if.bind="tweetDeletionModeToggled" class="two wide middle aligned column">
+        <div class="ui fitted checkbox">
+          <input name="example" value.bind="tweet.deleteSelected" type="checkbox">
+          <label></label>
         </div>
       </div>
 

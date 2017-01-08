@@ -1,0 +1,49 @@
+<template>
+
+  <require from="utils/date-format-joined"></require>
+
+  <div class="ui one column grid">
+    <div class="column">
+      <div class="ui segments">
+        <h2 class="ui center aligned icon header">
+          <i class="circular users icon"></i>
+          Users, ${selectedUser.firstName} is following
+        </h2>
+        <section class="ui grid center aligned stacked segment">
+        <div if.bind="selectedUser.following.length < 1" class="ui red label">
+          <i class="mail icon"></i> Sorry, but this user is not following any other users
+        </div>
+        <div class="five wide column" repeat.for="followedUser of selectedUser.following">
+          <div class="ui card">
+            <div class="image" if.bind="followedUser.gender == 'Female'">
+              <img src="/src/assets/avatars/kristy.png">
+            </div>
+            <div class="image" if.bind="followedUser.gender == 'Male'">
+              <img src="/src/assets/avatars/christian.jpg">
+            </div>
+            <div class="content">
+              <a class="header" route-href="route: userDetail;
+                                   params.bind: {id:followedUser._id}">${followedUser.firstName}
+                ${followedUser.lastName}</a>
+              <div class="meta">
+                <span class="date">Joined in ${followedUser.joined | dateFormat}</span>
+              </div>
+              <div class="description">
+                ${followedUser.description}
+              </div>
+            </div>
+            <!--<div class="extra content">-->
+            <!--&lt;!&ndash;<a>&ndash;&gt;-->
+            <!--&lt;!&ndash;<i class="user icon"></i>&ndash;&gt;-->
+            <!--&lt;!&ndash;Following: ${authenticatedUser.following.length}&ndash;&gt;-->
+            <!--&lt;!&ndash;</a>&ndash;&gt;-->
+            <!--</div>-->
+          </div>
+        </div>
+
+      </section>
+    </div>
+    </div>
+  </div>
+
+</template>

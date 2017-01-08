@@ -11,10 +11,16 @@ export class App {
     this.ts = ts;
     ea.subscribe(LoginStatus, msg => {
       if (msg.status.success === true) {
+        this.router.navigate('/', { replace: true, trigger: false });
+        this.router.reset();
+        this.router.deactivate();
         au.setRoot('home').then(() => {
           this.router.navigateToRoute('home');
         });
       } else {
+        this.router.navigate('/', { replace: true, trigger: false });
+        this.router.reset();
+        this.router.deactivate();
         au.setRoot('app').then(() => {
           this.router.navigateToRoute('login');
         });

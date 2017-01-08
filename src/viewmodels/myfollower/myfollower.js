@@ -3,12 +3,14 @@ import {inject} from 'aurelia-framework';
 import {AuthenticatedUserUpdatedMessage} from '../../services/messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import TweetService from '../../services/tweet-service';
+import {FollowerUpdatedMessage} from '../../services/messages';
+
 
 @inject(EventAggregator, TweetService)
 export class Stats {
 
   authenticatedUser = {};
-  genders = ['Female', 'Male'];
+  followers = [];
 
   constructor(eventAggregator, tweetService) {
     this.ea = eventAggregator;
@@ -16,22 +18,13 @@ export class Stats {
     this.ea.subscribe(AuthenticatedUserUpdatedMessage, message => {
       this.authenticatedUser = message.authenticatedUser;
     });
+    this.ea.subscribe(FollowerUpdatedMessage, message => {
+      this.followers = message.followers;
+    });
   }
 
   activate(params) {
     this.tweetService.getAuthenticatedUser();
-  }
-
-  saveUser() {
-    this.tweetService.saveSingleUser(this.authenticatedUser);
-  }
-
-  canEditUser(user) {
-    return this.tweetService.canEditUser(user);
-  }
-
-  hasPermission(user, permission) {
-    return this.tweetService.hasPermission(user, permission);
   }
 
 }

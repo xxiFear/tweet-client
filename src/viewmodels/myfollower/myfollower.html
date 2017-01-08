@@ -1,0 +1,78 @@
+<template>
+
+  <require from="utils/date-format-joined"></require>
+
+  <div class="ui one column grid">
+    <div class="column">
+      <div class="ui segments">
+        <h2 class="ui center aligned icon header">
+          <i class="circular blue users icon"></i>
+          Users, you are following
+        </h2>
+        <section class="ui grid center aligned stacked segment">
+          <div if.bind="authenticatedUser.following.length < 1" class="ui blue label">
+            <i class="frown icon"></i> Sorry, but you do not follow anyone
+          </div>
+          <div class="five wide column" repeat.for="followedUser of authenticatedUser.following">
+            <div class="ui card">
+              <div class="image" if.bind="followedUser.gender == 'Female'">
+                <img src="/src/assets/avatars/kristy.png">
+              </div>
+              <div class="image" if.bind="followedUser.gender == 'Male'">
+                <img src="/src/assets/avatars/christian.jpg">
+              </div>
+              <div class="content">
+                <a class="header" route-href="route: userDetail;
+                                   params.bind: {id:followedUser._id}">${followedUser.firstName}
+                  ${followedUser.lastName}</a>
+                <div class="meta">
+                  <span class="date">Joined in ${followedUser.joined | dateFormat}</span>
+                </div>
+                <div class="description">
+                  ${followedUser.description}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+    <div class="column">
+      <div class="ui segments">
+        <h2 class="ui center aligned icon header">
+          <i class="circular blue users icon"></i>
+          Users, who follow you
+        </h2>
+        <section class="ui grid center aligned stacked segment">
+          <div if.bind="followers.length < 1" class="ui red label">
+            <i class="frown icon"></i> Sorry, but noone likes you
+          </div>
+          <div class="five wide column" repeat.for="followingUser of followers">
+            <div class="ui card">
+              <div class="image" if.bind="followingUser.gender == 'Female'">
+                <img src="/src/assets/avatars/kristy.png">
+              </div>
+              <div class="image" if.bind="followingUser.gender == 'Male'">
+                <img src="/src/assets/avatars/christian.jpg">
+              </div>
+              <div class="content">
+                <a class="header" route-href="route: userDetail;
+                                   params.bind: {id:followingUser._id}">${followingUser.firstName}
+                  ${followingUser.lastName}</a>
+                <div class="meta">
+                  <span class="date">Joined in ${followingUser.joined | dateFormat}</span>
+                </div>
+                <div class="description">
+                  ${followingUser.description}
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </section>
+      </div>
+    </div>
+  </div>
+
+</template>

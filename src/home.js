@@ -46,6 +46,20 @@ export class Home {
         title: 'My Profile'
       },
       {
+        route: 'myfollower',
+        name: 'myfollower',
+        moduleId: 'viewmodels/myfollower/myfollower',
+        nav: true,
+        title: 'Follower/Following'
+      },
+      {
+        route: 'following/:id',
+        name: 'following',
+        moduleId: 'viewmodels/following/following',
+        nav: false,
+        title: 'Following'
+      },
+      {
         route: 'logout',
         name: 'logout',
         moduleId: 'viewmodels/logout/logout',

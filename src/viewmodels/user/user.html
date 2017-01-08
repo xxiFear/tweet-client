@@ -22,10 +22,16 @@
             </div>
           </div>
           <div class="extra content">
-            <a>
-              <i class="user icon"></i>
-              Following: ${selectedUser.following.length}
-            </a>
+              <a route-href="route: following;
+                             params.bind: {id:selectedUser._id}">
+                <i class="user icon"></i>
+                Following: ${selectedUser.following.length}
+              </a>
+
+            <!--<a>-->
+              <!--<i class="user icon"></i>-->
+              <!--Following: ${selectedUser.following.length}-->
+            <!--</a>-->
           </div>
         </div>
       </div>
@@ -49,6 +55,22 @@
             </div>
           </div>
 
+          <div class="field">
+            <label>Gender</label>
+            <select class="ui dropdown" value.bind="selectedUser.gender" disabled.bind="!canEditUser(selectedUser)">
+              <option repeat.for="gender of genders"
+                      model.bind="gender">
+                ${gender}
+              </option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label>Description</label>
+            <input name="description" type="text" value.bind="selectedUser.description"
+                   disabled.bind="!canEditUser(selectedUser)">
+          </div>
+
           <div class="two fields">
             <div class="field">
               <label>Email</label>
@@ -56,22 +78,13 @@
                      disabled.bind="!canEditUser(selectedUser)" name="mail" type="text">
             </div>
 
-
             <div class="field">
-              <label>Gender</label>
-              <select class="ui dropdown" value.bind="selectedUser.gender" disabled.bind="!canEditUser(selectedUser)">
-                <option repeat.for="gender of genders"
-                        model.bind="gender">
-                  ${gender}
-                </option>
-              </select>
+              <label>Password</label>
+              <input name="password" type="password" value.bind="selectedUser.password" disabled.bind="!canEditUser(selectedUser)">
             </div>
           </div>
 
-          <div class="field">
-            <label>Password</label>
-            <input name="password" type="password" value.bind="selectedUser.password" disabled.bind="!canEditUser(selectedUser)">
-          </div>
+
 
 
           <button class="ui primary submit button" if.bind="canEditUser(selectedUser)">Submit</button>

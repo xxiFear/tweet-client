@@ -8,7 +8,7 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {TotalTweetsUpdatedMessage} from './messages';
 import {SelectedUserUpdatedMessage} from './messages';
 import {AuthenticatedUserUpdatedMessage} from './messages';
-import _ from 'lodash';
+import {FollowerUpdatedMessage} from './messages';
 
 @inject(Fixtures, EventAggregator, AsyncHttpClient)
 export default class TweetService {
@@ -19,6 +19,7 @@ export default class TweetService {
   users = [];
   selectedUser = {};
   authenticatedUser = {};
+  follower = [];
 
   constructor(data, ea, ac) {
     this.methods = data.methods;
@@ -69,22 +70,34 @@ export default class TweetService {
 
   getGlobalTweets() {
     this.ac.get('/api/tweets').then(res => {
-      this.tweets =  res.content;
+      const tweets = res.content;
+      this.tweets = res.content;
       this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
       this.totalTweets = this.tweets.length;
       this.ea.publish(new TotalTweets(this.totalTweets));
     });
   }
 
-  postTweet(tweetContent) {
-    const tweet = {
-      message: tweetContent
-    };
-    this.ac.post('/api/tweets', tweet).then(res => {
-      this.tweets.unshift(res.content);
-      this.totalTweets = this.totalTweets + 1;
-      this.ea.publish(new TotalTweets(this.totalTweets));
-      this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
+  getFollowingUsers(followedUser) {
+    this.ac.get('/api/users/' + followedUser._id + '/follower').then(res => {
+      this.follower = res.content;
+      this.ea.publish(new FollowerUpdatedMessage(this.follower));
+    });
+  }
+
+  postTweet(tweet) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/tweets', tweet).then(res => {
+        if (res.statusCode === 201) {
+          this.tweets.unshift(res.content);
+          this.totalTweets = this.totalTweets + 1;
+          this.ea.publish(new TotalTweets(this.totalTweets));
+          this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
+          resolve(res.response);
+        } else {
+          reject(null);
+        }
+      });
     });
   }
 
@@ -93,19 +106,26 @@ export default class TweetService {
       const user = res.content;
       this.authenticatedUser = user;
       this.ea.publish(new AuthenticatedUserUpdatedMessage(this.authenticatedUser));
+      this.getFollowingUsers(this.authenticatedUser);
     });
   }
 
   followUser(userToFollow) {
     this.ac.post('/api/friendships/follow', userToFollow).then(res => {
-      this.authenticatedUser.following.push(userToFollow._id);
+      this.authenticatedUser.following.push(userToFollow);
       this.getGlobalTweets();
     });
   }
 
   unfollowUser(userToUnfollow) {
     this.ac.post('/api/friendships/unfollow', userToUnfollow).then(res => {
-      let index = this.authenticatedUser.following.indexOf(userToUnfollow._id);
+      let index = -1;
+      for (let i = 0, len = this.authenticatedUser.following.length; i < len; i++) {
+        if (this.authenticatedUser.following[i]._id === userToUnfollow._id) {
+          index = i;
+          break;
+        }
+      }
       if (index > -1) {
         this.authenticatedUser.following.splice(index, 1);
       }
@@ -148,42 +168,50 @@ export default class TweetService {
   }
 
   canDeleteTweet(tweet) {
-    if (tweet.author._id === this.authenticatedUser._id || this.hasPermission('admin')) {
+    if (tweet.author._id === this.authenticatedUser._id || this.hasPermission(this.authenticatedUser, 'admin')) {
       return true;
     }
     return false;
   }
 
   canDeleteUser(user) {
-    if (this.hasPermission('admin')) {
+    if (this.hasPermission(this.authenticatedUser, 'admin') && this.authenticatedUser._id !== user._id) {
       return true;
     }
     return false;
   }
 
   canEditUser(user) {
-    if (this.authenticatedUser._id === user._id || this.hasPermission('admin')) {
+    if (this.authenticatedUser._id === user._id || this.hasPermission(this.authenticatedUser, 'admin')) {
       return true;
     }
     return false;
   }
 
   canFollow(user) {
-    if (user._id !== this.authenticatedUser._id && !_.includes(this.authenticatedUser.following, user._id)) {
-      return true;
+    if (user._id !== this.authenticatedUser._id) {
+      if (!this.authenticatedUser.following.filter(function(followedUser) {
+        return followedUser._id === user._id;
+      }).length > 0) {
+        return true;
+      }
     }
     return false;
   }
 
   canUnfollow(user) {
-    if (user._id !== this.authenticatedUser._id && _.includes(this.authenticatedUser.following, user._id)) {
-      return true;
+    if (user._id !== this.authenticatedUser._id) {
+      if (this.authenticatedUser.following.filter(function(followedUser) {
+        return followedUser._id === user._id;
+      }).length > 0) {
+        return true;
+      }
     }
     return false;
   }
 
-  hasPermission(permission) {
-    if (this.authenticatedUser.role === permission) {
+  hasPermission(user, permission) {
+    if (user.role === permission) {
       return true;
     }
     return false;

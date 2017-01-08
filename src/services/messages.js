@@ -39,3 +39,9 @@ export class AuthenticatedUserUpdatedMessage {
     this.authenticatedUser = user;
   }
 }
+
+export class FollowerUpdatedMessage {
+  constructor(follower) {
+    this.followers = follower;
+  }
+}
