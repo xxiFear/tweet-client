@@ -39,6 +39,20 @@ export default class TweetService {
     });
   }
 
+  deleteSingleUser(userId) {
+    return new Promise((resolve, reject) => {
+      this.ac.delete('/api/users/' + userId).then(res => {
+        if (res.statusCode === 204) {
+          this.getGlobalTweets();
+          this.getAllUsers();
+          resolve(res.response);
+        } else {
+          reject(null);
+        }
+      });
+    });
+  }
+
   deleteSingleTweet(tweetId) {
     this.ac.delete('/api/tweets/' + tweetId).then(res => {
       this.getGlobalTweets();

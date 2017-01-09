@@ -3,16 +3,19 @@ import {inject} from 'aurelia-framework';
 import {SelectedUserUpdatedMessage} from '../../services/messages';
 import {EventAggregator} from 'aurelia-event-aggregator';
 import TweetService from '../../services/tweet-service';
+import {DialogService} from 'aurelia-dialog';
+import {DeleteConfirmationDialog} from './deleteConfirmationDialog';
 
-@inject(EventAggregator, TweetService)
+@inject(EventAggregator, DialogService, TweetService)
 export class Stats {
 
   selectedUser = {};
   genders = ['Female', 'Male'];
   numberOfFollowedUsers = 0;
 
-  constructor(eventAggregator, tweetService) {
+  constructor(eventAggregator, dialogService ,tweetService) {
     this.ea = eventAggregator;
+    this.dialogService = dialogService;
     this.tweetService = tweetService;
     this.ea.subscribe(SelectedUserUpdatedMessage, message => {
       this.selectedUser = message.selectedUser;
@@ -30,12 +33,27 @@ export class Stats {
     setUpFormValidator(this.saveUser.bind(this), null);
   }
 
+  showConfirmationDialog(user) {
+    this.dialogService.open({viewModel: DeleteConfirmationDialog, model: user}).then(response => {
+      if (!response.wasCancelled) {
+        console.log('Successful', response.output);
+      } else {
+        console.log('Error');
+      }
+      console.log(response.output);
+    });
+  }
+
   saveUser() {
     this.tweetService.saveSingleUser(this.selectedUser);
   }
 
   canEditUser(user) {
     return this.tweetService.canEditUser(user);
+  }
+
+  canDeleteUser(user) {
+    return this.tweetService.canDeleteUser(user);
   }
 
 }

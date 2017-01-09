@@ -45,7 +45,7 @@
           Users, who follow you
         </h2>
         <section class="ui grid center aligned stacked segment">
-          <div if.bind="followers.length < 1" class="ui red label">
+          <div if.bind="followers.length < 1" class="ui blue label">
             <i class="frown icon"></i> Sorry, but noone likes you
           </div>
           <div class="five wide column" repeat.for="followingUser of followers">

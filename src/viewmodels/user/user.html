@@ -34,6 +34,10 @@
             <!--</a>-->
           </div>
         </div>
+        <button if.bind="canDeleteUser(selectedUser)" class="ui negative button" click.trigger="showConfirmationDialog(selectedUser)">
+          <i class="icon remove user"></i>
+          Remove User
+        </button>
       </div>
 
 
