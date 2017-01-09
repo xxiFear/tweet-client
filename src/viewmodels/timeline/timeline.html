@@ -37,23 +37,23 @@
   <section id="menuSegment" class="ui center aligned grid">
     <div class="equal width row">
       <div class="column">
-        <button if.bind="!tweetDeletionModeToggled" class="ui negative button"
+        <button if.bind="!tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')" class="ui negative button"
                 click.trigger="toggleTweetDeletionMode()">
           <i class="icon remove user"></i>
           Toggle bulk tweet delete
         </button>
-        <div if.bind="tweetDeletionModeToggled" class="ui buttons">
+        <div if.bind="tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')" class="ui buttons">
           <button class="ui button" click.trigger="toggleTweetDeletionMode()">Cancel</button>
           <div class="or"></div>
           <button class="ui negative button">Delete selected tweets</button>
         </div>
       </div>
       <div class="column">
-        <button if.bind="!userDeletionModeToggled" class="ui negative button" click.trigger="toggleUserDeletionMode()">
+        <button if.bind="!userDeletionModeToggled && hasPermission(authenticatedUser, 'admin')" class="ui negative button" click.trigger="toggleUserDeletionMode()">
           <i class="icon remove user"></i>
           Toggle bulk user delete
         </button>
-        <div if.bind="userDeletionModeToggled" class="ui buttons">
+        <div if.bind="userDeletionModeToggled && hasPermission(authenticatedUser,'admin')" class="ui buttons">
           <button class="ui button" click.trigger="toggleUserDeletionMode()">Cancel</button>
           <div class="or"></div>
           <button class="ui negative button">Delete selected users</button>
