@@ -40,7 +40,7 @@
       <!--<div class="ui horizontal divider">User Detail</div>-->
 
       <div class="eight wide centered column">
-        <form submit.trigger="saveUser()" class="ui form segment">
+        <form id="userEditForm" class="ui form segment">
           <p>Tell Us About Yourself</p>
           <div class="two fields">
             <div class="field">
@@ -57,7 +57,7 @@
 
           <div class="field">
             <label>Gender</label>
-            <select class="ui dropdown" value.bind="selectedUser.gender" disabled.bind="!canEditUser(selectedUser)">
+            <select name="gender" class="ui dropdown" value.bind="selectedUser.gender" disabled.bind="!canEditUser(selectedUser)">
               <option repeat.for="gender of genders"
                       model.bind="gender">
                 ${gender}
@@ -87,8 +87,7 @@
 
 
 
-          <button class="ui primary submit button" if.bind="canEditUser(selectedUser)">Submit</button>
-          <div class="ui error message"></div>
+          <button class="ui primary button" if.bind="canEditUser(selectedUser)">Submit</button>
         </form>
       </div>
     </div>

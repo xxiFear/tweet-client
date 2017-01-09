@@ -93,6 +93,15 @@ function setUpFormValidator(onSuccess, onFailure) {
                 prompt: 'Password must not be emtpy!'
               }
             ]
+          },
+          description: {
+            identifier: 'description',
+            rules: [
+              {
+                type: 'maxLength[50]',
+                prompt: 'Please choose a brief description of yourself (max {ruleValue} characters)'
+              }
+            ]
           }
         }
       })
