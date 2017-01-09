@@ -30,6 +30,8 @@ export default class TweetService {
     });
   }
 
+  //API Methods
+
   getTweetsFromUser(userId) {
     this.ac.get('/api/users/' + userId + '/tweets').then(res => {
       this.tweets = res.content;

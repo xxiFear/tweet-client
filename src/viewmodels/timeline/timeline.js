@@ -52,6 +52,8 @@ export class Timeline {
 
   attached() {
     initilizeUploadForm();
+    //has to be done within attached because activated would not have access to DOM
+    setUpFormValidator(this.postTweet.bind(this), this.reinitializeUploadForm.bind(this));
   }
 
   detached() {
@@ -127,9 +129,6 @@ export class Timeline {
         tweet.image = base64EncodedImage;
         this.tweetService.postTweet(tweet).then(postedTweet => {
           console.log('tweet posted');
-          // //https://github.com/aurelia/router/issues/201
-          // // this.router.navigateToRoute('reload');
-          // this.eventAgregator.publish(new TweetUpdate({}));
           this.reinitializeUploadForm();
         }).catch(err => {
           console.log('tweet could not be posted');
@@ -172,13 +171,47 @@ function getBase64(file) {
   });
 }
 
+function setUpFormValidator(onSuccess, onFailure) {
+  $('#tweetForm')
+      .form({
+        on: 'submit',
+        inline: true,
+        onSuccess: function(event) {
+          //prevents redirect
+          console.log('Successfully validated');
+          event.preventDefault();
+          onSuccess();
+        },
+        onFailure: function() {
+          onFailure();
+          return false;
+        },
+        fields: {
+          tweetInput: {
+            identifier: 'tweetInput',
+            rules: [
+              {
+                type: 'empty',
+                prompt: 'Empty message!'
+              },
+              {
+                type: 'maxLength[144]',
+                prompt: 'Tweet too long, maximum of 144 chars'
+              }
+            ]
+          }
+        }
+      })
+  ;
+}
+
 function initilizeUploadForm() {
   $('#tweetForm #camerabutton')
       .on('click', function(e) {
         $('#tweetForm #fileInput', $(e.target).parents()).click();
       });
 
-  $('#tweetForm #fileInput').on('change', function (input) {
+  $('#tweetForm #fileInput').on('change', function(input) {
     let $preview = $('#tweetForm #imagePreview');
     if (this.files && this.files[0]) {
       let reader = new FileReader();
@@ -202,7 +235,7 @@ function initilizeUploadForm() {
         $('#imageSegment').attr('style', 'display: none');
       });
 
-  $('#tweetForm').on('submit', function () {
+  $('#tweetForm').on('submit', function() {
     $('#tweetForm').addClass('loading disabled');
   });
 }

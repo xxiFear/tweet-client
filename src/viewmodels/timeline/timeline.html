@@ -3,7 +3,7 @@
   <require from="utils/date-format"></require>
 
   <div class="ui fluid raised card">
-    <form submit.trigger="postTweet()" class="ui form" id="tweetForm" enctype='multipart/form-data'>
+    <form class="ui form" id="tweetForm" enctype='multipart/form-data'>
       <div class="ui fluid raised card">
         <div class="extra content">
           <div class="left floated author">
@@ -14,7 +14,8 @@
           <div class="right floated">
             <div class="ui icon button" id="camerabutton">
               <i class="camera icon"></i></div>
-            <button class="ui blue submit button">Share</button>
+            <!--NO submit button required here else validation is fired twice-->
+            <button class="ui blue button">Share</button>
           </div>
         </div>
         <div class="ui content">
@@ -22,7 +23,7 @@
             <div class="ui basic segment" id="imageSegment" style="display:none">
               <img class="ui fluid rounded image" id="imagePreview" src="">
             </div>
-            <div class="ui fluid input">
+            <div class="field">
               <input type="text" name="tweetInput" placeholder="Share your thoughts" value.bind="tweetInput">
             </div>
             <div class="field">
