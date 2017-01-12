@@ -115,9 +115,16 @@ export class Timeline {
     this.tweetService.unfollowUser(userToUnfollow);
   }
 
+  refreshGlobalTweets() {
+    this.tweetService.getGlobalTweets();
+  }
+
   toggleTweetDeletionMode() {
     if (this.tweetDeletionModeToggled) {
       this.tweetDeletionModeToggled = false;
+      this.globalTweets.forEach(tweet => {
+        tweet.deleteSelected = false;
+      });
     } else {
       this.tweetDeletionModeToggled = true;
     }
@@ -126,6 +133,9 @@ export class Timeline {
   toggleUserDeletionMode() {
     if (this.userDeletionModeToggled) {
       this.userDeletionModeToggled = false;
+      this.globalTweets.forEach(tweet => {
+        tweet.author.deleteSelected = false;
+      });
     } else {
       this.userDeletionModeToggled = true;
     }
