@@ -13,7 +13,7 @@ export class Home {
         route: ['', 'home'],
         name: 'Home',
         moduleId: 'viewmodels/home/home',
-        nav: true,
+        nav: false,
         title: 'Home'
       },
       {

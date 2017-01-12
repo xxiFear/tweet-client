@@ -1,13 +1,19 @@
 import {inject} from 'aurelia-framework';
 import TweetService from '../../services/tweet-service';
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {AuthenticatedUserUpdatedMessage} from '../../services/messages'
 
-@inject(TweetService)
+@inject(TweetService, EventAggregator)
 export class Home {
 
-  welcomeText = 'Welcome User'
+  authenticatedUser = {};
 
-  constructor(ts) {
+  constructor(ts, ea) {
     this.tweetService = ts;
+    this.eventAggregator = ea;
+    this.eventAggregator.subscribe(AuthenticatedUserUpdatedMessage, message => {
+      this.authenticatedUser = message.authenticatedUser;
+    });
   }
 
   activate() {
@@ -18,5 +24,7 @@ export class Home {
     this.tweetService.getAuthenticatedUser();
   }
 
+  attached() {
+  }
 
 }
