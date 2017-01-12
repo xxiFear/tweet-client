@@ -60,6 +60,13 @@ export class Home {
         title: 'Following'
       },
       {
+        route: 'socialGraph',
+        name: 'socialGraph',
+        moduleId: 'viewmodels/graph/graph',
+        nav: true,
+        title: 'Social Graph'
+      },
+      {
         route: 'logout',
         name: 'logout',
         moduleId: 'viewmodels/logout/logout',
