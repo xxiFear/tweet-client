@@ -13,7 +13,7 @@ export class Stats {
   constructor(ea, ts) {
     this.tweetService = ts;
     ea.subscribe(TotalUsers, msg => {
-      this.totalUsers = msg.users;
+      this.totalUsers = msg.usersCount;
     });
     ea.subscribe(TotalTweets, msg => {
       this.totalTweets = msg.tweets;
@@ -22,7 +22,7 @@ export class Stats {
 
   attached() {
     this.total = this.tweetService.total;
-    this.totalUsers = this.tweetService.totalUsers;
+    this.totalUsers = this.tweetService.totalUsersCount;
     this.totalTweets = this.tweetService.totalTweets;
   }
 

@@ -14,7 +14,7 @@ import {FollowerUpdatedMessage} from './messages';
 export default class TweetService {
 
   totalTweets = 0;
-  totalUsers = 0;
+  totalUsersCount = 0;
   tweets = [];
   users = [];
   selectedUser = {};
@@ -47,7 +47,7 @@ export default class TweetService {
           this.getAllUsers();
           resolve(res.response);
         } else {
-          reject(null);
+          reject(false);
         }
       });
     });
@@ -60,11 +60,45 @@ export default class TweetService {
     });
   }
 
+  deleteMultipleTweets(tweetsToDelete) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/tweets/multiple/' + JSON.stringify(tweetsToDelete)).then(result => {
+        if (result.statusCode === 204) {
+          this.getGlobalTweets();
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      });
+    });
+  }
+
+  deleteMultipleUsers(usersToDelete) {
+    return new Promise((resolve, reject) => {
+      this.ac.post('/api/users/multiple/' + JSON.stringify(usersToDelete)).then(result => {
+        if (result.statusCode === 204) {
+          this.getGlobalTweets();
+          this.getAllUsers();
+          resolve(true);
+        } else {
+          reject(false);
+        }
+      });
+    });
+  }
+
   getAllUsers() {
-    this.ac.get('/api/users').then(res => {
-      this.users = res.content;
-      this.totalUsers = this.users.length;
-      this.ea.publish(new TotalUsers(this.totalUsers));
+    return new Promise((resolve, reject) => {
+      this.ac.get('/api/users').then(res => {
+        if (res.statusCode === 200) {
+          this.users = res.content;
+          this.totalUsersCount = this.users.length;
+          this.ea.publish(new TotalUsers(this.totalUsersCount, this.users));
+          resolve(res.response);
+        } else {
+          reject(false);
+        }
+      });
     });
   }
 
@@ -86,7 +120,6 @@ export default class TweetService {
 
   getGlobalTweets() {
     this.ac.get('/api/tweets').then(res => {
-      const tweets = res.content;
       this.tweets = res.content;
       this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
       this.totalTweets = this.tweets.length;
@@ -111,7 +144,7 @@ export default class TweetService {
           this.ea.publish(new TotalTweetsUpdatedMessage(this.tweets));
           resolve(res.response);
         } else {
-          reject(null);
+          reject(false);
         }
       });
     });
@@ -150,14 +183,25 @@ export default class TweetService {
   }
 
 
-  register(firstName, lastName, email, password) {
-    const newUser = {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      password: password
-    };
-    this.users[email] = newUser;
+  register(firstName, lastName, email, password, gender) {
+    return new Promise((resolve, reject) => {
+      const newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        gender: gender
+      };
+      this.ac.post('/api/users', newUser).then(res => {
+        if (res.statusCode === 201) {
+          resolve(JSON.parse(res.response));
+        } else {
+          reject('error creating user');
+        }
+      });
+    }).catch(err => {
+      reject(err);
+    });
   }
 
   login(email, password) {

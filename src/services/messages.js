@@ -1,9 +1,3 @@
-export class TotalUpdate {
-  constructor(total) {
-    this.total = total;
-  }
-}
-
 export class LoginStatus {
   constructor(status) {
     this.status = status;
@@ -11,7 +5,8 @@ export class LoginStatus {
 }
 
 export class TotalUsers {
-  constructor(users) {
+  constructor(usersCount, users) {
+    this.usersCount = usersCount;
     this.users = users;
   }
 }

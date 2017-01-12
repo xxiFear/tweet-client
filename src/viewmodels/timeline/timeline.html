@@ -46,7 +46,7 @@
         <div if.bind="tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')" class="ui buttons">
           <button class="ui button" click.trigger="toggleTweetDeletionMode()">Cancel</button>
           <div class="or"></div>
-          <button class="ui negative button">Delete selected tweets</button>
+          <button click.trigger="deleteMultipleTweets()" class="ui negative button">Delete selected tweets</button>
         </div>
       </div>
       <div class="column">
@@ -57,7 +57,7 @@
         <div if.bind="userDeletionModeToggled && hasPermission(authenticatedUser,'admin')" class="ui buttons">
           <button class="ui button" click.trigger="toggleUserDeletionMode()">Cancel</button>
           <div class="or"></div>
-          <button class="ui negative button">Delete selected users</button>
+          <button click.trigger="deleteMultipleUsers()" class="ui negative button">Delete selected users</button>
         </div>
       </div>
     </div>
@@ -81,7 +81,7 @@
                         <i class="fa fa-user-md"></i> Admin
                       </div>
                       <div if.bind="userDeletionModeToggled && canDeleteUser(tweet.author)" class="ui fitted checkbox">
-                        <input name="example" value.bind="tweet.deleteSelected" type="checkbox">
+                        <input name="deleteUserCheckbox" checked.bind="tweet.author.deleteSelected" type="checkbox">
                         <label></label>
                       </div>
                       <img src="/src/assets/avatars/kristy.png">
@@ -91,7 +91,7 @@
                         <i class="fa fa-user-md"></i> Admin
                       </div>
                       <div if.bind="userDeletionModeToggled && canDeleteUser(tweet.author)" class="ui fitted checkbox">
-                        <input name="example" value.bind="tweet.author.deleteSelected" type="checkbox">
+                        <input name="deleteUserCheckbox" checked.bind="tweet.author.deleteSelected" type="checkbox">
                         <label></label>
                       </div>
                       <img src="/src/assets/avatars/christian.jpg">
@@ -146,7 +146,7 @@
       </div>
       <div if.bind="tweetDeletionModeToggled" class="two wide middle aligned column">
         <div class="ui fitted checkbox">
-          <input name="example" value.bind="tweet.deleteSelected" type="checkbox">
+          <input name="example" checked.bind="tweet.deleteSelected" type="checkbox">
           <label></label>
         </div>
       </div>

@@ -73,6 +73,38 @@ export class Timeline {
     });
   }
 
+  deleteMultipleTweets() {
+    let tweetsToDelete = [];
+    this.globalTweets.forEach(tweet => {
+      if (tweet.deleteSelected) {
+        tweetsToDelete.push(tweet._id);
+      }
+    });
+
+    if (tweetsToDelete.length > 0) {
+      this.tweetService.deleteMultipleTweets(tweetsToDelete).then(result => {
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+  }
+
+  deleteMultipleUsers() {
+    let usersToDelete = [];
+    this.globalTweets.forEach(tweet => {
+      if (tweet.author.deleteSelected) {
+        usersToDelete.push(tweet.author._id);
+      }
+    });
+
+    if (usersToDelete.length > 0) {
+      this.tweetService.deleteMultipleUsers(usersToDelete).then(result => {
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+  }
+
   followUser(userToFollow) {
     console.log(`Following user: ${userToFollow.firstName}`);
     this.tweetService.followUser(userToFollow);
