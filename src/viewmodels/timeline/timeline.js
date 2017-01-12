@@ -52,6 +52,7 @@ export class Timeline {
 
   attached() {
     initilizeUploadForm();
+    setUpTextCounter();
     //has to be done within attached because activated would not have access to DOM
     setUpFormValidator(this.postTweet.bind(this), this.reinitializeUploadForm.bind(this));
   }
@@ -279,6 +280,16 @@ function initilizeUploadForm() {
 
   $('#tweetForm').on('submit', function() {
     $('#tweetForm').addClass('loading disabled');
+  });
+}
+
+function setUpTextCounter() {
+  $('#tweetInput').on('propertychange input textInput', function () {
+    let left = 140 - $(this).val().length;
+    if (left < 0) {
+      left = 0;
+    }
+    $('#counter').text('Characters left: ' + left);
   });
 }
 

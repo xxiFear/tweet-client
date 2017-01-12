@@ -24,7 +24,12 @@
               <img class="ui fluid rounded image" id="imagePreview" src="">
             </div>
             <div class="field">
-              <input type="text" name="tweetInput" placeholder="Share your thoughts" value.bind="tweetInput">
+              <textarea id="tweetInput" name="tweetInput" maxlength="140" placeholder="Share whatever you like" value.bind="tweetInput">
+                Share whatever you like
+              </textarea>
+              <div class="">
+              <p id="counter"></p>
+              </div>
             </div>
             <div class="field">
               <input type="file" name="tweetImage" id="fileInput" accept="image/*" files.bind="tweetImage"  style="display:none">
