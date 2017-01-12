@@ -11,7 +11,7 @@ export class Home {
     config.map([
       {
         route: ['', 'home'],
-        name: 'Home',
+        name: 'home',
         moduleId: 'viewmodels/home/home',
         nav: false,
         title: 'Home'

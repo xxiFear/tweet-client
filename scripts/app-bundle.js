@@ -132,7 +132,7 @@ define('home',['exports', 'aurelia-framework'], function (exports, _aureliaFrame
     Home.prototype.configureRouter = function configureRouter(config, router) {
       config.map([{
         route: ['', 'home'],
-        name: 'Home',
+        name: 'home',
         moduleId: 'viewmodels/home/home',
         nav: false,
         title: 'Home'
@@ -293,6 +293,7 @@ define('services/async-http-client',['exports', 'aurelia-framework', 'aurelia-ht
       if (localStorage.donation !== 'null') {
         authenticated = true;
         this.http.configure(function (http) {
+          var auth = JSON.parse(localStorage.donation);
           if (auth) {
             http.withHeader('Authorization', 'bearer ' + auth.token);
           }

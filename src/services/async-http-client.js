@@ -20,7 +20,7 @@ export default class AsyncHttpClient {
     if (localStorage.donation !== 'null') {
       authenticated = true;
       this.http.configure(http => {
-        // const auth = JSON.parse(localStorage.donation);
+        const auth = JSON.parse(localStorage.donation);
         if (auth) {
           http.withHeader('Authorization', 'bearer ' + auth.token);
         }
