@@ -8,6 +8,8 @@ export class Signup {
   lastName = '';
   email = '';
   password = '';
+  gender = '';
+  genders = ['Male', 'Female'];
 
   constructor(ts) {
     this.tweetService = ts;
@@ -18,9 +20,10 @@ export class Signup {
   }
 
   register(e) {
-    this.showSignup = false;
-    this.tweetService.register(this.firstName, this.lastName, this.email, this.password);
-    this.tweetService.login(this.email, this.password);
+    this.tweetService.register(this.firstName, this.lastName, this.email, this.password, this.gender)
+        .then(newUser => {
+          this.tweetService.login(this.email, this.password);
+        });
   }
 }
 
@@ -72,6 +75,7 @@ function setUpFormValidator(onSuccess, onFailure) {
               }
             ]
           },
+          gender: ['Male', 'Female'],
           password: {
             identifier: 'password',
             rules: [
@@ -82,6 +86,15 @@ function setUpFormValidator(onSuccess, onFailure) {
               {
                 type: 'minLength[6]',
                 prompt: 'Password must have at least 6 characters!'
+              }
+            ]
+          },
+          passwordConfirm: {
+            identifier: 'passwordConfirm',
+            rules: [
+              {
+                type: 'match[password]',
+                prompt: 'Passwords do not match'
               }
             ]
           }

@@ -200,6 +200,7 @@ export default class TweetService {
         }
       });
     }).catch(err => {
+      console.log(err);
       reject(err);
     });
   }
