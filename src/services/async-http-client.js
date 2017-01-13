@@ -17,13 +17,12 @@ export default class AsyncHttpClient {
 
   isAuthenticated() {
     let authenticated = false;
-    if (localStorage.donation !== 'null' && localStorage.donation !== 'undefined') {
+    let cookie = localStorage.tweet;
+    console.log(cookie);
+    if (cookie !== null && cookie !== 'null' && cookie !== 'undefined' && typeof cookie !== 'undefined') {
       authenticated = true;
       this.http.configure(http => {
-        //Output of cookie for bug search
-        let cookie = localStorage.donation;
-        console.log(cookie);
-        const auth = JSON.parse(localStorage.donation);
+        const auth = JSON.parse(localStorage.tweet);
         if (auth) {
           http.withHeader('Authorization', 'bearer ' + auth.token);
         }
@@ -33,7 +32,7 @@ export default class AsyncHttpClient {
   }
 
   clearAuthentication() {
-    localStorage.donation = null;
+    localStorage.tweet = null;
     this.http.configure(configuration => {
       configuration.withHeader('Authorization', '');
     });
@@ -43,7 +42,7 @@ export default class AsyncHttpClient {
     this.http.post(url, user).then(response => {
       const status = response.content;
       if (status.success) {
-        localStorage.donation = JSON.stringify(response.content);
+        localStorage.tweet = JSON.stringify(response.content);
         this.http.configure(configuration => {
           configuration.withHeader('Authorization', 'bearer ' + response.content.token);
         });
