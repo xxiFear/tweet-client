@@ -17,7 +17,7 @@ export default class AsyncHttpClient {
 
   isAuthenticated() {
     let authenticated = false;
-    if (localStorage.donation !== 'null') {
+    if (localStorage.donation !== 'null' && localStorage.donation !== 'undefined') {
       authenticated = true;
       this.http.configure(http => {
         //Output of cookie for bug search
