@@ -884,6 +884,56 @@ define('viewmodels/following/following',['exports', 'aurelia-framework', '../../
     return Stats;
   }()) || _class);
 });
+define('viewmodels/home/home',['exports', 'aurelia-framework', '../../services/tweet-service', 'aurelia-event-aggregator', '../../services/messages'], function (exports, _aureliaFramework, _tweetService, _aureliaEventAggregator, _messages) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.Home = undefined;
+
+  var _tweetService2 = _interopRequireDefault(_tweetService);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var Home = exports.Home = (_dec = (0, _aureliaFramework.inject)(_tweetService2.default, _aureliaEventAggregator.EventAggregator), _dec(_class = function () {
+    function Home(ts, ea) {
+      var _this = this;
+
+      _classCallCheck(this, Home);
+
+      this.authenticatedUser = {};
+
+      this.tweetService = ts;
+      this.eventAggregator = ea;
+      this.eventAggregator.subscribe(_messages.AuthenticatedUserUpdatedMessage, function (message) {
+        _this.authenticatedUser = message.authenticatedUser;
+      });
+    }
+
+    Home.prototype.activate = function activate() {
+      this.tweetService.getAllUsers().then(function (allUsers) {});
+      this.tweetService.getGlobalTweets();
+      this.tweetService.getAuthenticatedUser();
+    };
+
+    Home.prototype.attached = function attached() {};
+
+    return Home;
+  }()) || _class);
+});
 define('viewmodels/graph/graph',['exports', 'aurelia-framework', 'aurelia-event-aggregator', '../../services/tweet-service', '../../services/messages', 'd3'], function (exports, _aureliaFramework, _aureliaEventAggregator, _tweetService, _messages, _d) {
   'use strict';
 
@@ -1038,56 +1088,6 @@ define('viewmodels/graph/graph',['exports', 'aurelia-framework', 'aurelia-event-
     };
 
     return Stats;
-  }()) || _class);
-});
-define('viewmodels/home/home',['exports', 'aurelia-framework', '../../services/tweet-service', 'aurelia-event-aggregator', '../../services/messages'], function (exports, _aureliaFramework, _tweetService, _aureliaEventAggregator, _messages) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.Home = undefined;
-
-  var _tweetService2 = _interopRequireDefault(_tweetService);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var Home = exports.Home = (_dec = (0, _aureliaFramework.inject)(_tweetService2.default, _aureliaEventAggregator.EventAggregator), _dec(_class = function () {
-    function Home(ts, ea) {
-      var _this = this;
-
-      _classCallCheck(this, Home);
-
-      this.authenticatedUser = {};
-
-      this.tweetService = ts;
-      this.eventAggregator = ea;
-      this.eventAggregator.subscribe(_messages.AuthenticatedUserUpdatedMessage, function (message) {
-        _this.authenticatedUser = message.authenticatedUser;
-      });
-    }
-
-    Home.prototype.activate = function activate() {
-      this.tweetService.getAllUsers().then(function (allUsers) {});
-      this.tweetService.getGlobalTweets();
-      this.tweetService.getAuthenticatedUser();
-    };
-
-    Home.prototype.attached = function attached() {};
-
-    return Home;
   }()) || _class);
 });
 define('viewmodels/login/login',['exports', 'aurelia-framework', '../../services/tweet-service'], function (exports, _aureliaFramework, _tweetService) {
@@ -1385,39 +1385,6 @@ define('viewmodels/myprofile/myprofile',['exports', 'aurelia-framework', '../../
     });
   }
 });
-define('viewmodels/report/report',['exports', 'aurelia-framework', '../../services/tweet-service'], function (exports, _aureliaFramework, _tweetService) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.Report = undefined;
-
-  var _tweetService2 = _interopRequireDefault(_tweetService);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var Report = exports.Report = (_dec = (0, _aureliaFramework.inject)(_tweetService2.default), _dec(_class = function Report(ds) {
-    _classCallCheck(this, Report);
-
-    this.donations = [];
-
-    this.donationService = ds;
-    this.donations = this.donationService.donations;
-  }) || _class);
-});
 define('viewmodels/signup/signup',['exports', 'aurelia-framework', '../../services/tweet-service'], function (exports, _aureliaFramework, _tweetService) {
   'use strict';
 
@@ -1533,6 +1500,39 @@ define('viewmodels/signup/signup',['exports', 'aurelia-framework', '../../servic
     });
   }
 });
+define('viewmodels/report/report',['exports', 'aurelia-framework', '../../services/tweet-service'], function (exports, _aureliaFramework, _tweetService) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.Report = undefined;
+
+  var _tweetService2 = _interopRequireDefault(_tweetService);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var Report = exports.Report = (_dec = (0, _aureliaFramework.inject)(_tweetService2.default), _dec(_class = function Report(ds) {
+    _classCallCheck(this, Report);
+
+    this.donations = [];
+
+    this.donationService = ds;
+    this.donations = this.donationService.donations;
+  }) || _class);
+});
 define('viewmodels/stats/stats',['exports', 'aurelia-framework', '../../services/messages', 'aurelia-event-aggregator', '../../services/tweet-service'], function (exports, _aureliaFramework, _messages, _aureliaEventAggregator, _tweetService) {
   'use strict';
 
@@ -1583,6 +1583,192 @@ define('viewmodels/stats/stats',['exports', 'aurelia-framework', '../../services
 
     return Stats;
   }()) || _class);
+});
+define('viewmodels/user/deleteConfirmationDialog',['exports', 'aurelia-dialog', '../../services/tweet-service', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaDialog, _tweetService, _aureliaFramework, _aureliaRouter) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.DeleteConfirmationDialog = undefined;
+
+  var _tweetService2 = _interopRequireDefault(_tweetService);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var DeleteConfirmationDialog = exports.DeleteConfirmationDialog = (_dec = (0, _aureliaFramework.inject)(_aureliaDialog.DialogController, _tweetService2.default, _aureliaRouter.Router), _dec(_class = function () {
+    function DeleteConfirmationDialog(controller, tweetService, router) {
+      _classCallCheck(this, DeleteConfirmationDialog);
+
+      this.user = { firstName: '' };
+
+      this.router = router;
+      this.controller = controller;
+      this.tweetService = tweetService;
+    }
+
+    DeleteConfirmationDialog.prototype.activate = function activate(user) {
+      this.user = user;
+    };
+
+    DeleteConfirmationDialog.prototype.deleteUser = function deleteUser(user) {
+      var _this = this;
+
+      this.tweetService.deleteSingleUser(this.user._id).then(function (res) {
+        _this.controller.ok(user);
+        _this.router.navigate('timeline');
+      });
+    };
+
+    return DeleteConfirmationDialog;
+  }()) || _class);
+});
+define('viewmodels/user/user',['exports', 'aurelia-framework', '../../services/messages', 'aurelia-event-aggregator', '../../services/tweet-service', 'aurelia-dialog', './deleteConfirmationDialog'], function (exports, _aureliaFramework, _messages, _aureliaEventAggregator, _tweetService, _aureliaDialog, _deleteConfirmationDialog) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.Stats = undefined;
+
+  var _tweetService2 = _interopRequireDefault(_tweetService);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var Stats = exports.Stats = (_dec = (0, _aureliaFramework.inject)(_aureliaEventAggregator.EventAggregator, _aureliaDialog.DialogService, _tweetService2.default), _dec(_class = function () {
+    function Stats(eventAggregator, dialogService, tweetService) {
+      var _this = this;
+
+      _classCallCheck(this, Stats);
+
+      this.selectedUser = {};
+      this.genders = ['Female', 'Male'];
+      this.numberOfFollowedUsers = 0;
+
+      this.ea = eventAggregator;
+      this.dialogService = dialogService;
+      this.tweetService = tweetService;
+      this.ea.subscribe(_messages.SelectedUserUpdatedMessage, function (message) {
+        _this.selectedUser = message.selectedUser;
+      });
+    }
+
+    Stats.prototype.activate = function activate(params) {
+      var id = params.id;
+      if (typeof id !== 'undefined' || id !== null) {
+        this.tweetService.getSingleUser(id);
+      }
+    };
+
+    Stats.prototype.attached = function attached() {
+      setUpFormValidator(this.saveUser.bind(this), null);
+    };
+
+    Stats.prototype.showConfirmationDialog = function showConfirmationDialog(user) {
+      this.dialogService.open({ viewModel: _deleteConfirmationDialog.DeleteConfirmationDialog, model: user }).then(function (response) {
+        if (!response.wasCancelled) {
+          console.log('Successful', response.output);
+        } else {
+          console.log('Error');
+        }
+        console.log(response.output);
+      });
+    };
+
+    Stats.prototype.saveUser = function saveUser() {
+      this.tweetService.saveSingleUser(this.selectedUser);
+    };
+
+    Stats.prototype.canEditUser = function canEditUser(user) {
+      return this.tweetService.canEditUser(user);
+    };
+
+    Stats.prototype.canDeleteUser = function canDeleteUser(user) {
+      return this.tweetService.canDeleteUser(user);
+    };
+
+    return Stats;
+  }()) || _class);
+
+
+  function setUpFormValidator(_onSuccess, _onFailure) {
+    $('#userEditForm').form({
+      on: 'submit',
+      inline: true,
+      onSuccess: function onSuccess(event) {
+        console.log('Successfully validated');
+        event.preventDefault();
+        _onSuccess();
+      },
+      onFailure: function onFailure() {
+        console.log('Validation failed');
+        _onFailure();
+        return false;
+      },
+      fields: {
+        firstname: {
+          identifier: 'firstname',
+          rules: [{
+            type: 'empty',
+            prompt: 'First name must not be emtpy!'
+          }]
+        },
+        lastname: {
+          identifier: 'lastname',
+          rules: [{
+            type: 'empty',
+            prompt: 'Last name must not be emtpy!'
+          }]
+        },
+        gender: ['Male', 'Female'],
+        mail: {
+          identifier: 'mail',
+          rules: [{
+            type: 'empty',
+            prompt: 'Mail must not be emtpy!'
+          }]
+        },
+        password: {
+          identifier: 'password',
+          rules: [{
+            type: 'empty',
+            prompt: 'Password must not be emtpy!'
+          }]
+        }
+      },
+      description: {
+        identifier: 'description',
+        rules: [{
+          type: 'maxLength[50]',
+          prompt: 'Please choose a brief description of yourself (max {ruleValue} characters)'
+        }]
+      }
+    });
+  }
 });
 define('viewmodels/timeline/deleteConfirmationDialog',['exports', 'aurelia-dialog', '../../services/tweet-service', 'aurelia-framework'], function (exports, _aureliaDialog, _tweetService, _aureliaFramework) {
   'use strict';
@@ -1930,192 +2116,6 @@ define('viewmodels/timeline/timeline',['exports', 'aurelia-framework', '../../se
         left = 0;
       }
       $('#counter').text('Characters left: ' + left);
-    });
-  }
-});
-define('viewmodels/user/deleteConfirmationDialog',['exports', 'aurelia-dialog', '../../services/tweet-service', 'aurelia-framework', 'aurelia-router'], function (exports, _aureliaDialog, _tweetService, _aureliaFramework, _aureliaRouter) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.DeleteConfirmationDialog = undefined;
-
-  var _tweetService2 = _interopRequireDefault(_tweetService);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var DeleteConfirmationDialog = exports.DeleteConfirmationDialog = (_dec = (0, _aureliaFramework.inject)(_aureliaDialog.DialogController, _tweetService2.default, _aureliaRouter.Router), _dec(_class = function () {
-    function DeleteConfirmationDialog(controller, tweetService, router) {
-      _classCallCheck(this, DeleteConfirmationDialog);
-
-      this.user = { firstName: '' };
-
-      this.router = router;
-      this.controller = controller;
-      this.tweetService = tweetService;
-    }
-
-    DeleteConfirmationDialog.prototype.activate = function activate(user) {
-      this.user = user;
-    };
-
-    DeleteConfirmationDialog.prototype.deleteUser = function deleteUser(user) {
-      var _this = this;
-
-      this.tweetService.deleteSingleUser(this.user._id).then(function (res) {
-        _this.controller.ok(user);
-        _this.router.navigate('timeline');
-      });
-    };
-
-    return DeleteConfirmationDialog;
-  }()) || _class);
-});
-define('viewmodels/user/user',['exports', 'aurelia-framework', '../../services/messages', 'aurelia-event-aggregator', '../../services/tweet-service', 'aurelia-dialog', './deleteConfirmationDialog'], function (exports, _aureliaFramework, _messages, _aureliaEventAggregator, _tweetService, _aureliaDialog, _deleteConfirmationDialog) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.Stats = undefined;
-
-  var _tweetService2 = _interopRequireDefault(_tweetService);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var Stats = exports.Stats = (_dec = (0, _aureliaFramework.inject)(_aureliaEventAggregator.EventAggregator, _aureliaDialog.DialogService, _tweetService2.default), _dec(_class = function () {
-    function Stats(eventAggregator, dialogService, tweetService) {
-      var _this = this;
-
-      _classCallCheck(this, Stats);
-
-      this.selectedUser = {};
-      this.genders = ['Female', 'Male'];
-      this.numberOfFollowedUsers = 0;
-
-      this.ea = eventAggregator;
-      this.dialogService = dialogService;
-      this.tweetService = tweetService;
-      this.ea.subscribe(_messages.SelectedUserUpdatedMessage, function (message) {
-        _this.selectedUser = message.selectedUser;
-      });
-    }
-
-    Stats.prototype.activate = function activate(params) {
-      var id = params.id;
-      if (typeof id !== 'undefined' || id !== null) {
-        this.tweetService.getSingleUser(id);
-      }
-    };
-
-    Stats.prototype.attached = function attached() {
-      setUpFormValidator(this.saveUser.bind(this), null);
-    };
-
-    Stats.prototype.showConfirmationDialog = function showConfirmationDialog(user) {
-      this.dialogService.open({ viewModel: _deleteConfirmationDialog.DeleteConfirmationDialog, model: user }).then(function (response) {
-        if (!response.wasCancelled) {
-          console.log('Successful', response.output);
-        } else {
-          console.log('Error');
-        }
-        console.log(response.output);
-      });
-    };
-
-    Stats.prototype.saveUser = function saveUser() {
-      this.tweetService.saveSingleUser(this.selectedUser);
-    };
-
-    Stats.prototype.canEditUser = function canEditUser(user) {
-      return this.tweetService.canEditUser(user);
-    };
-
-    Stats.prototype.canDeleteUser = function canDeleteUser(user) {
-      return this.tweetService.canDeleteUser(user);
-    };
-
-    return Stats;
-  }()) || _class);
-
-
-  function setUpFormValidator(_onSuccess, _onFailure) {
-    $('#userEditForm').form({
-      on: 'submit',
-      inline: true,
-      onSuccess: function onSuccess(event) {
-        console.log('Successfully validated');
-        event.preventDefault();
-        _onSuccess();
-      },
-      onFailure: function onFailure() {
-        console.log('Validation failed');
-        _onFailure();
-        return false;
-      },
-      fields: {
-        firstname: {
-          identifier: 'firstname',
-          rules: [{
-            type: 'empty',
-            prompt: 'First name must not be emtpy!'
-          }]
-        },
-        lastname: {
-          identifier: 'lastname',
-          rules: [{
-            type: 'empty',
-            prompt: 'Last name must not be emtpy!'
-          }]
-        },
-        gender: ['Male', 'Female'],
-        mail: {
-          identifier: 'mail',
-          rules: [{
-            type: 'empty',
-            prompt: 'Mail must not be emtpy!'
-          }]
-        },
-        password: {
-          identifier: 'password',
-          rules: [{
-            type: 'empty',
-            prompt: 'Password must not be emtpy!'
-          }]
-        }
-      },
-      description: {
-        identifier: 'description',
-        rules: [{
-          type: 'maxLength[50]',
-          prompt: 'Please choose a brief description of yourself (max {ruleValue} characters)'
-        }]
-      }
     });
   }
 });
@@ -2848,9 +2848,9 @@ define('text!viewmodels/myfollower/myfollower.html', ['module'], function(module
 define('text!viewmodels/myprofile/myprofile.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n  <require from=\"utils/date-format-joined\"></require>\r\n\r\n  <section class=\"ui grid segment\">\r\n    <div class=\"row\">\r\n      <div class=\"five wide centered column\">\r\n        <div class=\"ui card\">\r\n          <div class=\"image\" if.bind=\"authenticatedUser.gender == 'Female'\">\r\n            <div if.bind=\"hasPermission(authenticatedUser, 'admin')\" class=\"ui red ribbon label\">\r\n              <i class=\"fa fa-user-md\"></i> Admin\r\n            </div>\r\n            <img src=\"/src/assets/avatars/kristy.png\">\r\n          </div>\r\n          <div class=\"image\" if.bind=\"authenticatedUser.gender == 'Male'\">\r\n            <div if.bind=\"hasPermission(authenticatedUser, 'admin')\" class=\"ui red ribbon label\">\r\n              <i class=\"fa fa-user-md\"></i> Admin\r\n            </div>\r\n            <img src=\"/src/assets/avatars/christian.jpg\">\r\n          </div>\r\n          <div class=\"content\">\r\n            <a class=\"header\">${authenticatedUser.firstName}</a>\r\n            <div class=\"meta\">\r\n              <span class=\"date\">Joined in ${authenticatedUser.joined | dateFormat}</span>\r\n            </div>\r\n            <div class=\"description\">\r\n              ${authenticatedUser.description}\r\n            </div>\r\n          </div>\r\n          <div class=\"extra content\">\r\n            <a route-href=\"route: following;\r\n                             params.bind: {id:authenticatedUser._id}\">\r\n              <i class=\"user icon\"></i>\r\n              Following: ${authenticatedUser.following.length}\r\n            </a>\r\n\r\n            <!--<a>-->\r\n            <!--<i class=\"user icon\"></i>-->\r\n            <!--Following: ${selectedUser.following.length}-->\r\n            <!--</a>-->\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n\r\n      <!--<div class=\"ui horizontal divider\">User Detail</div>-->\r\n\r\n      <div class=\"eight wide centered column\">\r\n        <form id=\"myProfileEditForm\" class=\"ui form segment\">\r\n          <p>Tell Us About Yourself</p>\r\n          <div class=\"two fields\">\r\n            <div class=\"field\">\r\n              <label>First Name</label>\r\n              <input placeholder=\"First Name\" value.bind=\"authenticatedUser.firstName\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\" name=\"firstname\" type=\"text\">\r\n            </div>\r\n            <div class=\"field\">\r\n              <label>Last Name</label>\r\n              <input placeholder=\"Last Name\" value.bind=\"authenticatedUser.lastName\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\" name=\"lastname\" type=\"text\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"field\">\r\n            <label>Gender</label>\r\n            <select name=\"gender\" class=\"ui dropdown\" value.bind=\"authenticatedUser.gender\"\r\n                    disabled.bind=\"!canEditUser(authenticatedUser)\">\r\n              <option repeat.for=\"gender of genders\"\r\n                      model.bind=\"gender\">\r\n                ${gender}\r\n              </option>\r\n            </select>\r\n          </div>\r\n\r\n          <div class=\"field\">\r\n            <label>Description</label>\r\n            <input name=\"description\" type=\"text\" value.bind=\"authenticatedUser.description\"\r\n                   disabled.bind=\"!canEditUser(authenticatedUser)\">\r\n          </div>\r\n\r\n\r\n          <div class=\"two fields\">\r\n            <div class=\"field\">\r\n              <label>Email</label>\r\n              <input placeholder=\"Email\" readonly=\"\" value.bind=\"authenticatedUser.email\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\" name=\"mail\" type=\"text\">\r\n            </div>\r\n\r\n\r\n            <div class=\"field\">\r\n              <label>Password</label>\r\n              <input name=\"password\" type=\"password\" value.bind=\"authenticatedUser.password\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\">\r\n            </div>\r\n          </div>\r\n\r\n\r\n          <button class=\"ui primary button\" if.bind=\"canEditUser(authenticatedUser)\">Submit</button>\r\n          <div class=\"ui error message\"></div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </section>\r\n</template>"; });
 define('text!viewmodels/report/report.html', ['module'], function(module) { module.exports = "<template>\n\n  <article class=\"ui stacked segment\">\n    <h3 class='ui dividing header'> Donations to Date </h3>\n    <table class=\"ui celled table segment\">\n      <thead>\n      <tr>\n        <th>Amount</th>\n        <th>Method donated</th>\n        <th>Candidate</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr repeat.for=\"donation of donations\">\n        <td> ${donation.amount}</td>\n        <td> ${donation.method}</td>\n        <td> ${donation.candidate.lastName}, ${donation.candidate.firstName}</td>\n      </tr>\n      </tbody>\n    </table>\n  </article>\n\n</template>\n"; });
 define('text!viewmodels/signup/signup.html', ['module'], function(module) { module.exports = "<template>\n  <form id=\"registerForm\" class=\"ui stacked segment form\">\n    <h3 class=\"ui header\">Register</h3>\n    <div class=\"two fields\">\n      <div class=\"field\">\n        <label>First Name</label>\n        <input name=\"firstname\" placeholder=\"First Name\" type=\"text\" value.bind=\"firstName\">\n      </div>\n      <div class=\"field\">\n        <label>Last Name</label>\n        <input name=\"lastname\" placeholder=\"Last Name\" type=\"text\" value.bind=\"lastName\">\n      </div>\n    </div>\n    <div class=\"two fields\">\n      <div class=\"field\">\n        <label>Gender</label>\n        <select name=\"gender\" class=\"ui dropdown\" value.bind=\"gender\">\n          <!--<option selected=\"selected\"></option>-->\n          <option repeat.for=\"gender of genders\"\n                  model.bind=\"gender\">\n            ${gender}\n          </option>\n        </select>\n      </div>\n      <div class=\"field\">\n        <label>Email</label>\n        <input name=\"mail\" placeholder=\"Email\" type=\"text\" value.bind=\"email\">\n      </div>\n    </div>\n    <div class=\"two fields\">\n      <div class=\"field\">\n        <label>Password</label>\n        <input name=\"password\" placeholder=\"Password\" type=\"password\" value.bind=\"password\">\n      </div>\n      <div class=\"field\">\n        <label>Confirm Password</label>\n        <input placeholder=\"Confirm Password\" name=\"passwordConfirm\" type=\"password\">\n      </div>\n    </div>\n    <button class=\"ui blue button\">Submit</button>\n  </form>\n</template>\n"; });
-define('text!viewmodels/stats/stats.html', ['module'], function(module) { module.exports = "<template>\n\n  <section class=\"ui grid segment\">\n    <!--<section class=\"ui stacked statistic segment\">-->\n    <!--<div class=\"value\">-->\n    <!--${total}-->\n    <!--</div>-->\n    <!--<div class=\"label\">-->\n    <!--Donated-->\n    <!--</div>-->\n    <!--</section>-->\n\n    <div class=\"five wide column\">\n      <section class=\"ui stacked statistic segment\">\n        <div class=\"value\">\n          <i class=\"comments outline blue icon\"></i>\n          ${totalTweets}\n        </div>\n        <div class=\"label\">\n          Total written Tweets in our Database\n        </div>\n      </section>\n    </div>\n\n    <div class=\"six wide column\">\n      <section class=\"ui stacked statistic segment\">\n        <div class=\"value\">\n          <i class=\"user blue icon\"></i>\n          ${totalUsers}\n        </div>\n        <div class=\"label\">\n          Total Registered Users\n        </div>\n      </section>\n    </div>\n\n  </section>\n\n</template>\n"; });
 define('text!viewmodels/timeline/deleteConfirmationDialog.html', ['module'], function(module) { module.exports = "<template>\r\n  <ai-dialog>\r\n    <ai-dialog-body>\r\n      <h2>Are you sure you want to delete this post?</h2>\r\n\r\n    </ai-dialog-body>\r\n\r\n    <ai-dialog-footer>\r\n      <button click.trigger=\"controller.cancel()\">Cancel</button>\r\n      <button click.trigger=\"deleteTweet(tweet)\">Ok</button>\r\n    </ai-dialog-footer>\r\n  </ai-dialog>\r\n</template>"; });
-define('text!viewmodels/timeline/timeline.html', ['module'], function(module) { module.exports = "<template>\n\n  <require from=\"utils/date-format\"></require>\n\n  <div class=\"ui fluid raised card\">\n    <form class=\"ui form\" id=\"tweetForm\" enctype='multipart/form-data'>\n      <div class=\"ui fluid raised card\">\n        <div class=\"extra content\">\n          <div class=\"left floated author\">\n            <img if.bind=\"authenticatedUser.gender === 'Female'\" src=\"/src/assets/avatars/kristy.png\" class=\"ui avatar image\">\n            <img if.bind=\"authenticatedUser.gender === 'Male'\" src=\"/src/assets/avatars/christian.jpg\" class=\"ui avatar image\">\n            ${authenticatedUser.firstName} ${authenticatedUser.lastName}\n          </div>\n          <div class=\"right floated\">\n            <div class=\"ui icon button\" id=\"camerabutton\">\n              <i class=\"camera icon\"></i></div>\n            <!--NO submit button required here else validation is fired twice-->\n            <button class=\"ui blue button\">Share</button>\n          </div>\n        </div>\n        <div class=\"ui content\">\n          <div class=\"description\">\n            <div class=\"ui basic segment\" id=\"imageSegment\" style=\"display:none\">\n              <img class=\"ui fluid rounded image\" id=\"imagePreview\" src=\"\">\n            </div>\n            <div class=\"field\">\n              <textarea id=\"tweetInput\" name=\"tweetInput\" maxlength=\"140\" placeholder=\"Share whatever you like\" value.bind=\"tweetInput\">\n                Share whatever you like\n              </textarea>\n              <div class=\"\">\n              <p id=\"counter\"></p>\n              </div>\n            </div>\n            <div class=\"field\">\n              <input type=\"file\" name=\"tweetImage\" id=\"fileInput\" accept=\"image/*\" files.bind=\"tweetImage\"  style=\"display:none\">\n            </div>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <section id=\"menuSegment\" class=\"ui center aligned grid\">\n    <div class=\"equal width row\">\n      <div class=\"column\">\n        <button class=\"ui blue button\"\n                click.trigger=\"refreshGlobalTweets()\">\n          <i class=\"icon refresh\"></i>\n          Refresh Global Tweets\n        </button>\n      </div>\n      <div class=\"column\">\n        <button if.bind=\"!tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')\" class=\"ui negative button\"\n                click.trigger=\"toggleTweetDeletionMode()\">\n          <i class=\"icon remove user\"></i>\n          Toggle Tweet Delete\n        </button>\n        <div if.bind=\"tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')\" class=\"ui buttons\">\n          <button class=\"ui button\" click.trigger=\"toggleTweetDeletionMode()\">Cancel</button>\n          <div class=\"or\"></div>\n          <button click.trigger=\"deleteMultipleTweets()\" class=\"ui negative button\">Delete Selected Tweets</button>\n        </div>\n      </div>\n      <div class=\"column\">\n        <button if.bind=\"!userDeletionModeToggled && hasPermission(authenticatedUser, 'admin')\" class=\"ui negative button\" click.trigger=\"toggleUserDeletionMode()\">\n          <i class=\"icon remove user\"></i>\n          Toggle User Delete\n        </button>\n        <div if.bind=\"userDeletionModeToggled && hasPermission(authenticatedUser,'admin')\" class=\"ui buttons\">\n          <button class=\"ui button\" click.trigger=\"toggleUserDeletionMode()\">Cancel</button>\n          <div class=\"or\"></div>\n          <button click.trigger=\"deleteMultipleUsers()\" class=\"ui negative button\">Delete Selected Users</button>\n        </div>\n      </div>\n    </div>\n  </section>\n\n\n\n  <section class=\"ui raised grid center aligned segment\">\n\n    <div class=\"row\" repeat.for=\"tweet of globalTweets\">\n\n      <div class=\"thirteen wide column\">\n        <div class=\"ui padded raised center aligned segment\">\n          <div class=\"ui internally celled grid\">\n            <div class=\"row\">\n              <div class=\"five wide column\">\n                <div class=\"ui center aligned\">\n                  <div class=\"ui card\">\n                    <a class=\"image\" if.bind=\"tweet.author.gender == 'Female'\">\n                      <div if.bind=\"hasPermission(tweet.author, 'admin')\" class=\"ui red ribbon label\">\n                        <i class=\"fa fa-user-md\"></i> Admin\n                      </div>\n                      <div if.bind=\"userDeletionModeToggled && canDeleteUser(tweet.author)\" class=\"ui fitted checkbox\">\n                        <input name=\"deleteUserCheckbox\" checked.bind=\"tweet.author.deleteSelected\" type=\"checkbox\">\n                        <label></label>\n                      </div>\n                      <img src=\"/src/assets/avatars/kristy.png\">\n                    </a>\n                    <a class=\"image\" if.bind=\"tweet.author.gender == 'Male'\">\n                      <div if.bind=\"hasPermission(tweet.author, 'admin')\" class=\"ui red ribbon label\">\n                        <i class=\"fa fa-user-md\"></i> Admin\n                      </div>\n                      <div if.bind=\"userDeletionModeToggled && canDeleteUser(tweet.author)\" class=\"ui fitted checkbox\">\n                        <input name=\"deleteUserCheckbox\" checked.bind=\"tweet.author.deleteSelected\" type=\"checkbox\">\n                        <label></label>\n                      </div>\n                      <img src=\"/src/assets/avatars/christian.jpg\">\n                    </a>\n                    <div class=\"content\">\n                      <a class=\"header\" route-href=\"route: userDetail;\n                                   params.bind: {id:tweet.author._id}\">${tweet.author.firstName} ${tweet.author.lastName}</a>\n                      <!--<div class=\"meta\">-->\n                        <!--<a>Last Seen 2 days ago</a>-->\n                      <!--</div>-->\n                    </div>\n                  </div>\n\n                </div>\n                <!--<i class=\"circular pencil icon\"></i>-->\n                posted on\n\n                <div class=\"date\">\n                  ${tweet.time | dateFormat}\n                </div>\n\n                <a class=\"ui icon button\" route-href=\"route: timeline;\n                                   params.bind: {id:tweet.author._id}\">\n                  <i class=\"fa fa-comments\" title=\"Show ${tweet.author.firstName}'s timeline\"></i>\n                </a>\n                <button class=\"positive ui icon button\" if.bind=\"canFollow(tweet.author)\" click.trigger=\"followUser(tweet.author)\">\n                  <i class=\"add user icon\" title=\"Follow ${tweet.author.firstName}\"></i>\n                </button>\n                <button class=\"negative ui icon button\" if.bind=\"canUnfollow(tweet.author)\" click.trigger=\"unfollowUser(tweet.author)\">\n                  <i class=\"remove user icon\" title=\"Unfollow ${tweet.author.firstName}\"></i>\n                </button>\n\n                <button class=\"negative ui icon button\" disabled.bind=\"!canDeleteTweet(tweet)\" type=\"button\" click.trigger=\"showConfirmationDialog(tweet)\">\n                  <i class=\"fa fa-trash\" title=\"Delete this comment\"></i>\n                </button>\n\n              </div>\n\n              <div class=\"ten wide column\">\n                <div if.bind=\"tweet.imagePath\" class=\"ui basic segment\">\n                  <img class=\"ui fluid rounded image\" src=\"${tweet.imagePath}\">\n                </div>\n                <div class=\"extra text\">\n                  ${tweet.message}\n                </div>\n\n              </div>\n\n            </div>\n          </div>\n        </div>\n      </div>\n      <div if.bind=\"tweetDeletionModeToggled\" class=\"two wide middle aligned column\">\n        <div class=\"ui fitted checkbox\">\n          <input name=\"example\" checked.bind=\"tweet.deleteSelected\" type=\"checkbox\">\n          <label></label>\n        </div>\n      </div>\n\n\n    </div>\n  </section>\n</template>\n\n"; });
+define('text!viewmodels/timeline/timeline.html', ['module'], function(module) { module.exports = "<template>\n\n  <require from=\"utils/date-format\"></require>\n\n  <div class=\"ui fluid raised card\">\n    <form class=\"ui form\" id=\"tweetForm\" enctype='multipart/form-data'>\n      <div class=\"ui fluid raised card\">\n        <div class=\"extra content\">\n          <div class=\"left floated author\">\n            <img if.bind=\"authenticatedUser.gender === 'Female'\" src=\"../../assets/avatars/kristy.png\" class=\"ui avatar image\">\n            <img if.bind=\"authenticatedUser.gender === 'Male'\" src=\"../../assets/avatars/christian.jpg\" class=\"ui avatar image\">\n            ${authenticatedUser.firstName} ${authenticatedUser.lastName}\n          </div>\n          <div class=\"right floated\">\n            <div class=\"ui icon button\" id=\"camerabutton\">\n              <i class=\"camera icon\"></i></div>\n            <!--NO submit button required here else validation is fired twice-->\n            <button class=\"ui blue button\">Share</button>\n          </div>\n        </div>\n        <div class=\"ui content\">\n          <div class=\"description\">\n            <div class=\"ui basic segment\" id=\"imageSegment\" style=\"display:none\">\n              <img class=\"ui fluid rounded image\" id=\"imagePreview\" src=\"\">\n            </div>\n            <div class=\"field\">\n              <textarea id=\"tweetInput\" name=\"tweetInput\" maxlength=\"140\" placeholder=\"Share whatever you like\" value.bind=\"tweetInput\">\n                Share whatever you like\n              </textarea>\n              <div class=\"\">\n              <p id=\"counter\"></p>\n              </div>\n            </div>\n            <div class=\"field\">\n              <input type=\"file\" name=\"tweetImage\" id=\"fileInput\" accept=\"image/*\" files.bind=\"tweetImage\"  style=\"display:none\">\n            </div>\n          </div>\n        </div>\n      </div>\n    </form>\n  </div>\n\n  <section id=\"menuSegment\" class=\"ui center aligned grid\">\n    <div class=\"equal width row\">\n      <div class=\"column\">\n        <button class=\"ui blue button\"\n                click.trigger=\"refreshGlobalTweets()\">\n          <i class=\"icon refresh\"></i>\n          Refresh Global Tweets\n        </button>\n      </div>\n      <div class=\"column\">\n        <button if.bind=\"!tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')\" class=\"ui negative button\"\n                click.trigger=\"toggleTweetDeletionMode()\">\n          <i class=\"icon remove user\"></i>\n          Toggle Tweet Delete\n        </button>\n        <div if.bind=\"tweetDeletionModeToggled && hasPermission(authenticatedUser,'admin')\" class=\"ui buttons\">\n          <button class=\"ui button\" click.trigger=\"toggleTweetDeletionMode()\">Cancel</button>\n          <div class=\"or\"></div>\n          <button click.trigger=\"deleteMultipleTweets()\" class=\"ui negative button\">Delete Selected Tweets</button>\n        </div>\n      </div>\n      <div class=\"column\">\n        <button if.bind=\"!userDeletionModeToggled && hasPermission(authenticatedUser, 'admin')\" class=\"ui negative button\" click.trigger=\"toggleUserDeletionMode()\">\n          <i class=\"icon remove user\"></i>\n          Toggle User Delete\n        </button>\n        <div if.bind=\"userDeletionModeToggled && hasPermission(authenticatedUser,'admin')\" class=\"ui buttons\">\n          <button class=\"ui button\" click.trigger=\"toggleUserDeletionMode()\">Cancel</button>\n          <div class=\"or\"></div>\n          <button click.trigger=\"deleteMultipleUsers()\" class=\"ui negative button\">Delete Selected Users</button>\n        </div>\n      </div>\n    </div>\n  </section>\n\n\n\n  <section class=\"ui raised grid center aligned segment\">\n\n    <div class=\"row\" repeat.for=\"tweet of globalTweets\">\n\n      <div class=\"thirteen wide column\">\n        <div class=\"ui padded raised center aligned segment\">\n          <div class=\"ui internally celled grid\">\n            <div class=\"row\">\n              <div class=\"five wide column\">\n                <div class=\"ui center aligned\">\n                  <div class=\"ui card\">\n                    <a class=\"image\" if.bind=\"tweet.author.gender == 'Female'\">\n                      <div if.bind=\"hasPermission(tweet.author, 'admin')\" class=\"ui red ribbon label\">\n                        <i class=\"fa fa-user-md\"></i> Admin\n                      </div>\n                      <div if.bind=\"userDeletionModeToggled && canDeleteUser(tweet.author)\" class=\"ui fitted checkbox\">\n                        <input name=\"deleteUserCheckbox\" checked.bind=\"tweet.author.deleteSelected\" type=\"checkbox\">\n                        <label></label>\n                      </div>\n                      <img src=\"/src/assets/avatars/kristy.png\">\n                    </a>\n                    <a class=\"image\" if.bind=\"tweet.author.gender == 'Male'\">\n                      <div if.bind=\"hasPermission(tweet.author, 'admin')\" class=\"ui red ribbon label\">\n                        <i class=\"fa fa-user-md\"></i> Admin\n                      </div>\n                      <div if.bind=\"userDeletionModeToggled && canDeleteUser(tweet.author)\" class=\"ui fitted checkbox\">\n                        <input name=\"deleteUserCheckbox\" checked.bind=\"tweet.author.deleteSelected\" type=\"checkbox\">\n                        <label></label>\n                      </div>\n                      <img src=\"/src/assets/avatars/christian.jpg\">\n                    </a>\n                    <div class=\"content\">\n                      <a class=\"header\" route-href=\"route: userDetail;\n                                   params.bind: {id:tweet.author._id}\">${tweet.author.firstName} ${tweet.author.lastName}</a>\n                      <!--<div class=\"meta\">-->\n                        <!--<a>Last Seen 2 days ago</a>-->\n                      <!--</div>-->\n                    </div>\n                  </div>\n\n                </div>\n                <!--<i class=\"circular pencil icon\"></i>-->\n                posted on\n\n                <div class=\"date\">\n                  ${tweet.time | dateFormat}\n                </div>\n\n                <a class=\"ui icon button\" route-href=\"route: timeline;\n                                   params.bind: {id:tweet.author._id}\">\n                  <i class=\"fa fa-comments\" title=\"Show ${tweet.author.firstName}'s timeline\"></i>\n                </a>\n                <button class=\"positive ui icon button\" if.bind=\"canFollow(tweet.author)\" click.trigger=\"followUser(tweet.author)\">\n                  <i class=\"add user icon\" title=\"Follow ${tweet.author.firstName}\"></i>\n                </button>\n                <button class=\"negative ui icon button\" if.bind=\"canUnfollow(tweet.author)\" click.trigger=\"unfollowUser(tweet.author)\">\n                  <i class=\"remove user icon\" title=\"Unfollow ${tweet.author.firstName}\"></i>\n                </button>\n\n                <button class=\"negative ui icon button\" disabled.bind=\"!canDeleteTweet(tweet)\" type=\"button\" click.trigger=\"showConfirmationDialog(tweet)\">\n                  <i class=\"fa fa-trash\" title=\"Delete this comment\"></i>\n                </button>\n\n              </div>\n\n              <div class=\"ten wide column\">\n                <div if.bind=\"tweet.imagePath\" class=\"ui basic segment\">\n                  <img class=\"ui fluid rounded image\" src=\"${tweet.imagePath}\">\n                </div>\n                <div class=\"extra text\">\n                  ${tweet.message}\n                </div>\n\n              </div>\n\n            </div>\n          </div>\n        </div>\n      </div>\n      <div if.bind=\"tweetDeletionModeToggled\" class=\"two wide middle aligned column\">\n        <div class=\"ui fitted checkbox\">\n          <input name=\"example\" checked.bind=\"tweet.deleteSelected\" type=\"checkbox\">\n          <label></label>\n        </div>\n      </div>\n\n\n    </div>\n  </section>\n</template>\n\n"; });
+define('text!viewmodels/stats/stats.html', ['module'], function(module) { module.exports = "<template>\n\n  <section class=\"ui grid segment\">\n    <!--<section class=\"ui stacked statistic segment\">-->\n    <!--<div class=\"value\">-->\n    <!--${total}-->\n    <!--</div>-->\n    <!--<div class=\"label\">-->\n    <!--Donated-->\n    <!--</div>-->\n    <!--</section>-->\n\n    <div class=\"five wide column\">\n      <section class=\"ui stacked statistic segment\">\n        <div class=\"value\">\n          <i class=\"comments outline blue icon\"></i>\n          ${totalTweets}\n        </div>\n        <div class=\"label\">\n          Total written Tweets in our Database\n        </div>\n      </section>\n    </div>\n\n    <div class=\"six wide column\">\n      <section class=\"ui stacked statistic segment\">\n        <div class=\"value\">\n          <i class=\"user blue icon\"></i>\n          ${totalUsers}\n        </div>\n        <div class=\"label\">\n          Total Registered Users\n        </div>\n      </section>\n    </div>\n\n  </section>\n\n</template>\n"; });
 define('text!viewmodels/user/deleteConfirmationDialog.html', ['module'], function(module) { module.exports = "<template>\r\n  <ai-dialog>\r\n    <ai-dialog-body>\r\n      <h2>Are you sure you want to delete ${user.firstName}'s profile?</h2>\r\n\r\n    </ai-dialog-body>\r\n\r\n    <ai-dialog-footer>\r\n      <button click.trigger=\"controller.cancel()\">Cancel</button>\r\n      <button click.trigger=\"deleteUser(user)\">Ok</button>\r\n    </ai-dialog-footer>\r\n  </ai-dialog>\r\n</template>"; });
 define('text!viewmodels/user/user.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n  <require from=\"utils/date-format-joined\"></require>\r\n\r\n  <section class=\"ui grid segment\">\r\n    <div class=\"row\">\r\n      <div class=\"five wide centered column\">\r\n        <div class=\"ui card\">\r\n          <div class=\"image\" if.bind=\"selectedUser.gender == 'Female'\">\r\n            <img src=\"/src/assets/avatars/kristy.png\">\r\n          </div>\r\n          <div class=\"image\" if.bind=\"selectedUser.gender == 'Male'\">\r\n            <img src=\"/src/assets/avatars/christian.jpg\">\r\n          </div>\r\n          <div class=\"content\">\r\n            <a class=\"header\">${selectedUser.firstName}</a>\r\n            <div class=\"meta\">\r\n              <span class=\"date\">Joined in ${selectedUser.joined | dateFormat}</span>\r\n            </div>\r\n            <div class=\"description\">\r\n              ${selectedUser.description}\r\n            </div>\r\n          </div>\r\n          <div class=\"extra content\">\r\n              <a route-href=\"route: following;\r\n                             params.bind: {id:selectedUser._id}\">\r\n                <i class=\"user icon\"></i>\r\n                Following: ${selectedUser.following.length}\r\n              </a>\r\n\r\n            <!--<a>-->\r\n              <!--<i class=\"user icon\"></i>-->\r\n              <!--Following: ${selectedUser.following.length}-->\r\n            <!--</a>-->\r\n          </div>\r\n        </div>\r\n        <button if.bind=\"canDeleteUser(selectedUser)\" class=\"ui negative button\" click.trigger=\"showConfirmationDialog(selectedUser)\">\r\n          <i class=\"icon remove user\"></i>\r\n          Remove User\r\n        </button>\r\n      </div>\r\n\r\n\r\n      <!--<div class=\"ui horizontal divider\">User Detail</div>-->\r\n\r\n      <div class=\"eight wide centered column\">\r\n        <form id=\"userEditForm\" class=\"ui form segment\">\r\n          <p>Tell Us About Yourself</p>\r\n          <div class=\"two fields\">\r\n            <div class=\"field\">\r\n              <label>First Name</label>\r\n              <input placeholder=\"First Name\" value.bind=\"selectedUser.firstName\"\r\n                     disabled.bind=\"!canEditUser(selectedUser)\" name=\"firstname\" type=\"text\">\r\n            </div>\r\n            <div class=\"field\">\r\n              <label>Last Name</label>\r\n              <input placeholder=\"Last Name\" value.bind=\"selectedUser.lastName\"\r\n                     disabled.bind=\"!canEditUser(selectedUser)\" name=\"lastname\" type=\"text\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"field\">\r\n            <label>Gender</label>\r\n            <select name=\"gender\" class=\"ui dropdown\" value.bind=\"selectedUser.gender\" disabled.bind=\"!canEditUser(selectedUser)\">\r\n              <option repeat.for=\"gender of genders\"\r\n                      model.bind=\"gender\">\r\n                ${gender}\r\n              </option>\r\n            </select>\r\n          </div>\r\n\r\n          <div class=\"field\">\r\n            <label>Description</label>\r\n            <input name=\"description\" type=\"text\" value.bind=\"selectedUser.description\"\r\n                   disabled.bind=\"!canEditUser(selectedUser)\">\r\n          </div>\r\n\r\n          <div class=\"two fields\">\r\n            <div class=\"field\">\r\n              <label>Email</label>\r\n              <input placeholder=\"Email\" readonly=\"\" value.bind=\"selectedUser.email\"\r\n                     disabled.bind=\"!canEditUser(selectedUser)\" name=\"mail\" type=\"text\">\r\n            </div>\r\n\r\n            <div class=\"field\">\r\n              <label>Password</label>\r\n              <input name=\"password\" type=\"password\" value.bind=\"selectedUser.password\" disabled.bind=\"!canEditUser(selectedUser)\">\r\n            </div>\r\n          </div>\r\n\r\n\r\n\r\n\r\n          <button class=\"ui primary button\" if.bind=\"canEditUser(selectedUser)\">Submit</button>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </section>\r\n</template>"; });
 //# sourceMappingURL=app-bundle.js.map
