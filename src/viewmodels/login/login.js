@@ -4,8 +4,10 @@ import TweetService from '../../services/tweet-service';
 @inject(TweetService)
 export class Login {
 
-  email = 'matthias.hartmann@mail.de';
-  password = 'secret';
+  // email = 'matthias.hartmann@mail.de';
+  // password = 'secret';
+  email = '';
+  password = '';
 
   constructor(ts) {
     this.tweetService = ts;
