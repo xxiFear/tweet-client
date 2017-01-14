@@ -1090,45 +1090,6 @@ define('viewmodels/home/home',['exports', 'aurelia-framework', '../../services/t
     return Home;
   }()) || _class);
 });
-define('viewmodels/logout/logout',['exports', '../../services/tweet-service', 'aurelia-framework'], function (exports, _tweetService, _aureliaFramework) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.Logout = undefined;
-
-  var _tweetService2 = _interopRequireDefault(_tweetService);
-
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-      default: obj
-    };
-  }
-
-  function _classCallCheck(instance, Constructor) {
-    if (!(instance instanceof Constructor)) {
-      throw new TypeError("Cannot call a class as a function");
-    }
-  }
-
-  var _dec, _class;
-
-  var Logout = exports.Logout = (_dec = (0, _aureliaFramework.inject)(_tweetService2.default), _dec(_class = function () {
-    function Logout(donationService) {
-      _classCallCheck(this, Logout);
-
-      this.donationService = donationService;
-    }
-
-    Logout.prototype.logout = function logout() {
-      console.log('Logging Out');
-      this.donationService.logout();
-    };
-
-    return Logout;
-  }()) || _class);
-});
 define('viewmodels/login/login',['exports', 'aurelia-framework', '../../services/tweet-service'], function (exports, _aureliaFramework, _tweetService) {
   'use strict';
 
@@ -1170,6 +1131,7 @@ define('viewmodels/login/login',['exports', 'aurelia-framework', '../../services
 
     Login.prototype.login = function login(e) {
       console.log('Trying to log in ' + this.email);
+      this.email = this.email.toLowerCase();
       this.tweetService.login(this.email, this.password);
     };
 
@@ -1215,6 +1177,45 @@ define('viewmodels/login/login',['exports', 'aurelia-framework', '../../services
       }
     });
   }
+});
+define('viewmodels/logout/logout',['exports', '../../services/tweet-service', 'aurelia-framework'], function (exports, _tweetService, _aureliaFramework) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  exports.Logout = undefined;
+
+  var _tweetService2 = _interopRequireDefault(_tweetService);
+
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {
+      default: obj
+    };
+  }
+
+  function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+      throw new TypeError("Cannot call a class as a function");
+    }
+  }
+
+  var _dec, _class;
+
+  var Logout = exports.Logout = (_dec = (0, _aureliaFramework.inject)(_tweetService2.default), _dec(_class = function () {
+    function Logout(donationService) {
+      _classCallCheck(this, Logout);
+
+      this.donationService = donationService;
+    }
+
+    Logout.prototype.logout = function logout() {
+      console.log('Logging Out');
+      this.donationService.logout();
+    };
+
+    return Logout;
+  }()) || _class);
 });
 define('viewmodels/myfollower/myfollower',['exports', 'aurelia-framework', '../../services/messages', 'aurelia-event-aggregator', '../../services/tweet-service'], function (exports, _aureliaFramework, _messages, _aureliaEventAggregator, _tweetService) {
   'use strict';
@@ -2839,11 +2840,11 @@ define('text!app.html', ['module'], function(module) { module.exports = "<templa
 define('text!home.html', ['module'], function(module) { module.exports = "<template>\n  <require from=\"nav-bar.html\"></require>\n  <div class=\"ui container page-host\">\n    <nav-bar router.bind=\"router\"></nav-bar>\n    <router-view>\n    </router-view>\n  </div>\n</template>\n"; });
 define('text!nav-bar.html', ['module'], function(module) { module.exports = "<template bindable=\"router\">\n  <nav class=\"ui secondary pointing menu\">\n    <header class=\"header item\">\n      <a href=\"/\"> Tweet </a>\n    </header>\n    <div class=\"right menu\">\n      <div repeat.for=\"row of router.navigation\">\n        <a class=\"${row.isActive ? 'active' : ''} item\"  href.bind=\"row.href\">\n          ${row.title}\n        </a>\n      </div>\n    </div>\n  </nav>\n</template>\n"; });
 define('text!viewmodels/dashboard/dashboard.html', ['module'], function(module) { module.exports = "<template>\n  <section class=\"ui raised grid segment\">\n    <div class=\"row\">\n      <!--<div class=\"ui column\">-->\n        <!--<compose class=\"ui\" view-model=\"../timeline/timeline\"></compose>-->\n      <!--</div>-->\n      <div class=\"ui column\">\n        <compose class=\"ui\" view-model=\"../myprofile/myprofile\"></compose>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"column\">\n        <compose class=\"ui\" view-model=\"../myfollower/myfollower\"></compose>\n      </div>\n    </div>\n    <div class=\"row\">\n      <div class=\"column\">\n        <compose class=\"ui\" view-model=\"../stats/stats\"></compose>\n      </div>\n    </div>\n  </section>\n</template>\n"; });
-define('text!viewmodels/graph/graph.html', ['module'], function(module) { module.exports = "<template>\r\n  <meta charset=\"utf-8\">\r\n  <style>\r\n\r\n    .link {\r\n      fill: none;\r\n      stroke: #666;\r\n      stroke-width: 1.5px;\r\n    }\r\n\r\n    #blue {\r\n      fill: lightblue;\r\n    }\r\n\r\n    .link.blue {\r\n      stroke: lightblue;\r\n    }\r\n\r\n    circle {\r\n      fill: #ccc;\r\n      stroke: #ccc;\r\n      stroke-width: 1.5px;\r\n    }\r\n\r\n    text {\r\n      font: 10px sans-serif;\r\n      pointer-events: none;\r\n      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;\r\n    }\r\n\r\n  </style>\r\n  <section class=\"ui stacked center aligned segment\">\r\n    <div id=\"content\">\r\n\r\n    </div>\r\n  </section>\r\n</template>\r\n"; });
 define('text!viewmodels/following/following.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n  <require from=\"utils/date-format-joined\"></require>\r\n\r\n  <div class=\"ui one column grid\">\r\n    <div class=\"column\">\r\n      <div class=\"ui segments\">\r\n        <h2 class=\"ui center aligned icon header\">\r\n          <i class=\"circular blue users icon\"></i>\r\n          Users, ${selectedUser.firstName} is following\r\n        </h2>\r\n        <section class=\"ui grid center aligned stacked segment\">\r\n        <div if.bind=\"selectedUser.following.length < 1\" class=\"ui red label\">\r\n          <i class=\"mail icon\"></i> Sorry, but this user is not following any other users\r\n        </div>\r\n        <div class=\"five wide column\" repeat.for=\"followedUser of selectedUser.following\">\r\n          <div class=\"ui card\">\r\n            <div class=\"image\" if.bind=\"followedUser.gender == 'Female'\">\r\n              <img src=\"/src/assets/avatars/kristy.png\">\r\n            </div>\r\n            <div class=\"image\" if.bind=\"followedUser.gender == 'Male'\">\r\n              <img src=\"/src/assets/avatars/christian.jpg\">\r\n            </div>\r\n            <div class=\"content\">\r\n              <a class=\"header\" route-href=\"route: userDetail;\r\n                                   params.bind: {id:followedUser._id}\">${followedUser.firstName}\r\n                ${followedUser.lastName}</a>\r\n              <div class=\"meta\">\r\n                <span class=\"date\">Joined in ${followedUser.joined | dateFormat}</span>\r\n              </div>\r\n              <div class=\"description\">\r\n                ${followedUser.description}\r\n              </div>\r\n            </div>\r\n            <!--<div class=\"extra content\">-->\r\n            <!--&lt;!&ndash;<a>&ndash;&gt;-->\r\n            <!--&lt;!&ndash;<i class=\"user icon\"></i>&ndash;&gt;-->\r\n            <!--&lt;!&ndash;Following: ${authenticatedUser.following.length}&ndash;&gt;-->\r\n            <!--&lt;!&ndash;</a>&ndash;&gt;-->\r\n            <!--</div>-->\r\n          </div>\r\n        </div>\r\n\r\n      </section>\r\n    </div>\r\n    </div>\r\n  </div>\r\n\r\n</template>"; });
+define('text!viewmodels/graph/graph.html', ['module'], function(module) { module.exports = "<template>\r\n  <meta charset=\"utf-8\">\r\n  <style>\r\n\r\n    .link {\r\n      fill: none;\r\n      stroke: #666;\r\n      stroke-width: 1.5px;\r\n    }\r\n\r\n    #blue {\r\n      fill: lightblue;\r\n    }\r\n\r\n    .link.blue {\r\n      stroke: lightblue;\r\n    }\r\n\r\n    circle {\r\n      fill: #ccc;\r\n      stroke: #ccc;\r\n      stroke-width: 1.5px;\r\n    }\r\n\r\n    text {\r\n      font: 10px sans-serif;\r\n      pointer-events: none;\r\n      text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;\r\n    }\r\n\r\n  </style>\r\n  <section class=\"ui stacked center aligned segment\">\r\n    <div id=\"content\">\r\n\r\n    </div>\r\n  </section>\r\n</template>\r\n"; });
 define('text!viewmodels/home/home.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n  <div class=\"ui center aligned segment\">\r\n      <label>Hello ${authenticatedUser.firstName}, nice to see you again</label>\r\n      <div class=\"field\">\r\n        <i class=\"smile icon\" aria-hidden=\"true\"></i>\r\n      </div>\r\n  </div>\r\n\r\n</template>\r\n"; });
-define('text!viewmodels/logout/logout.html', ['module'], function(module) { module.exports = "<template>\n\n  <form submit.delegate=\"logout($event)\" class=\"ui stacked segment form\">\n    <h3 class=\"ui header\">Are you sure you want to log out?</h3>\n    <button class=\"ui blue submit button\">Logout</button>\n  </form>\n\n</template>\n"; });
 define('text!viewmodels/login/login.html', ['module'], function(module) { module.exports = "<template>\n\n  <form id=\"loginForm\" class=\"ui stacked segment form\">\n    <h3 class=\"ui header\">Log-in</h3>\n    <div class=\"field\">\n      <label>Email</label>\n      <input name=\"mail\" placeholder=\"Email\" value.bind=\"email\"/>\n    </div>\n    <div class=\"field\">\n      <label>Password</label>\n      <input name=\"password\" placeholder=\"Password\" type=\"password\" value.bind=\"password\"/>\n    </div>\n    <button class=\"ui blue button\">Login</button>\n    <h3>${prompt}</h3>\n  </form>\n\n</template>\n"; });
+define('text!viewmodels/logout/logout.html', ['module'], function(module) { module.exports = "<template>\n\n  <form submit.delegate=\"logout($event)\" class=\"ui stacked segment form\">\n    <h3 class=\"ui header\">Are you sure you want to log out?</h3>\n    <button class=\"ui blue submit button\">Logout</button>\n  </form>\n\n</template>\n"; });
 define('text!viewmodels/myfollower/myfollower.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n  <require from=\"utils/date-format-joined\"></require>\r\n\r\n  <div class=\"ui one column grid\">\r\n    <div class=\"column\">\r\n      <div class=\"ui segments\">\r\n        <h2 class=\"ui center aligned icon header\">\r\n          <i class=\"circular blue users icon\"></i>\r\n          Users, you are following\r\n        </h2>\r\n        <section class=\"ui grid center aligned stacked segment\">\r\n          <div if.bind=\"authenticatedUser.following.length < 1\" class=\"ui blue label\">\r\n            <i class=\"frown icon\"></i> Sorry, but you do not follow anyone\r\n          </div>\r\n          <div class=\"five wide column\" repeat.for=\"followedUser of authenticatedUser.following\">\r\n            <div class=\"ui card\">\r\n              <div class=\"image\" if.bind=\"followedUser.gender == 'Female'\">\r\n                <img src=\"/src/assets/avatars/kristy.png\">\r\n              </div>\r\n              <div class=\"image\" if.bind=\"followedUser.gender == 'Male'\">\r\n                <img src=\"/src/assets/avatars/christian.jpg\">\r\n              </div>\r\n              <div class=\"content\">\r\n                <a class=\"header\" route-href=\"route: userDetail;\r\n                                   params.bind: {id:followedUser._id}\">${followedUser.firstName}\r\n                  ${followedUser.lastName}</a>\r\n                <div class=\"meta\">\r\n                  <span class=\"date\">Joined in ${followedUser.joined | dateFormat}</span>\r\n                </div>\r\n                <div class=\"description\">\r\n                  ${followedUser.description}\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n        </section>\r\n      </div>\r\n    </div>\r\n    <div class=\"column\">\r\n      <div class=\"ui segments\">\r\n        <h2 class=\"ui center aligned icon header\">\r\n          <i class=\"circular blue users icon\"></i>\r\n          Users, who follow you\r\n        </h2>\r\n        <section class=\"ui grid center aligned stacked segment\">\r\n          <div if.bind=\"followers.length < 1\" class=\"ui blue label\">\r\n            <i class=\"frown icon\"></i> Sorry, but noone likes you\r\n          </div>\r\n          <div class=\"five wide column\" repeat.for=\"followingUser of followers\">\r\n            <div class=\"ui card\">\r\n              <div class=\"image\" if.bind=\"followingUser.gender == 'Female'\">\r\n                <img src=\"/src/assets/avatars/kristy.png\">\r\n              </div>\r\n              <div class=\"image\" if.bind=\"followingUser.gender == 'Male'\">\r\n                <img src=\"/src/assets/avatars/christian.jpg\">\r\n              </div>\r\n              <div class=\"content\">\r\n                <a class=\"header\" route-href=\"route: userDetail;\r\n                                   params.bind: {id:followingUser._id}\">${followingUser.firstName}\r\n                  ${followingUser.lastName}</a>\r\n                <div class=\"meta\">\r\n                  <span class=\"date\">Joined in ${followingUser.joined | dateFormat}</span>\r\n                </div>\r\n                <div class=\"description\">\r\n                  ${followingUser.description}\r\n                </div>\r\n              </div>\r\n            </div>\r\n          </div>\r\n\r\n        </section>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n</template>"; });
 define('text!viewmodels/myprofile/myprofile.html', ['module'], function(module) { module.exports = "<template>\r\n\r\n  <require from=\"utils/date-format-joined\"></require>\r\n\r\n  <section class=\"ui grid segment\">\r\n    <div class=\"row\">\r\n      <div class=\"five wide centered column\">\r\n        <div class=\"ui card\">\r\n          <div class=\"image\" if.bind=\"authenticatedUser.gender == 'Female'\">\r\n            <div if.bind=\"hasPermission(authenticatedUser, 'admin')\" class=\"ui red ribbon label\">\r\n              <i class=\"fa fa-user-md\"></i> Admin\r\n            </div>\r\n            <img src=\"/src/assets/avatars/kristy.png\">\r\n          </div>\r\n          <div class=\"image\" if.bind=\"authenticatedUser.gender == 'Male'\">\r\n            <div if.bind=\"hasPermission(authenticatedUser, 'admin')\" class=\"ui red ribbon label\">\r\n              <i class=\"fa fa-user-md\"></i> Admin\r\n            </div>\r\n            <img src=\"/src/assets/avatars/christian.jpg\">\r\n          </div>\r\n          <div class=\"content\">\r\n            <a class=\"header\">${authenticatedUser.firstName}</a>\r\n            <div class=\"meta\">\r\n              <span class=\"date\">Joined in ${authenticatedUser.joined | dateFormat}</span>\r\n            </div>\r\n            <div class=\"description\">\r\n              ${authenticatedUser.description}\r\n            </div>\r\n          </div>\r\n          <div class=\"extra content\">\r\n            <a route-href=\"route: following;\r\n                             params.bind: {id:authenticatedUser._id}\">\r\n              <i class=\"user icon\"></i>\r\n              Following: ${authenticatedUser.following.length}\r\n            </a>\r\n\r\n            <!--<a>-->\r\n            <!--<i class=\"user icon\"></i>-->\r\n            <!--Following: ${selectedUser.following.length}-->\r\n            <!--</a>-->\r\n          </div>\r\n        </div>\r\n      </div>\r\n\r\n\r\n      <!--<div class=\"ui horizontal divider\">User Detail</div>-->\r\n\r\n      <div class=\"eight wide centered column\">\r\n        <form id=\"myProfileEditForm\" class=\"ui form segment\">\r\n          <p>Tell Us About Yourself</p>\r\n          <div class=\"two fields\">\r\n            <div class=\"field\">\r\n              <label>First Name</label>\r\n              <input placeholder=\"First Name\" value.bind=\"authenticatedUser.firstName\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\" name=\"firstname\" type=\"text\">\r\n            </div>\r\n            <div class=\"field\">\r\n              <label>Last Name</label>\r\n              <input placeholder=\"Last Name\" value.bind=\"authenticatedUser.lastName\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\" name=\"lastname\" type=\"text\">\r\n            </div>\r\n          </div>\r\n\r\n          <div class=\"field\">\r\n            <label>Gender</label>\r\n            <select name=\"gender\" class=\"ui dropdown\" value.bind=\"authenticatedUser.gender\"\r\n                    disabled.bind=\"!canEditUser(authenticatedUser)\">\r\n              <option repeat.for=\"gender of genders\"\r\n                      model.bind=\"gender\">\r\n                ${gender}\r\n              </option>\r\n            </select>\r\n          </div>\r\n\r\n          <div class=\"field\">\r\n            <label>Description</label>\r\n            <input name=\"description\" type=\"text\" value.bind=\"authenticatedUser.description\"\r\n                   disabled.bind=\"!canEditUser(authenticatedUser)\">\r\n          </div>\r\n\r\n\r\n          <div class=\"two fields\">\r\n            <div class=\"field\">\r\n              <label>Email</label>\r\n              <input placeholder=\"Email\" readonly=\"\" value.bind=\"authenticatedUser.email\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\" name=\"mail\" type=\"text\">\r\n            </div>\r\n\r\n\r\n            <div class=\"field\">\r\n              <label>Password</label>\r\n              <input name=\"password\" type=\"password\" value.bind=\"authenticatedUser.password\"\r\n                     disabled.bind=\"!canEditUser(authenticatedUser)\">\r\n            </div>\r\n          </div>\r\n\r\n\r\n          <button class=\"ui primary button\" if.bind=\"canEditUser(authenticatedUser)\">Submit</button>\r\n          <div class=\"ui error message\"></div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </section>\r\n</template>"; });
 define('text!viewmodels/report/report.html', ['module'], function(module) { module.exports = "<template>\n\n  <article class=\"ui stacked segment\">\n    <h3 class='ui dividing header'> Donations to Date </h3>\n    <table class=\"ui celled table segment\">\n      <thead>\n      <tr>\n        <th>Amount</th>\n        <th>Method donated</th>\n        <th>Candidate</th>\n      </tr>\n      </thead>\n      <tbody>\n      <tr repeat.for=\"donation of donations\">\n        <td> ${donation.amount}</td>\n        <td> ${donation.method}</td>\n        <td> ${donation.candidate.lastName}, ${donation.candidate.firstName}</td>\n      </tr>\n      </tbody>\n    </table>\n  </article>\n\n</template>\n"; });
