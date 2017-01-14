@@ -20,6 +20,7 @@ export class Login {
 
   login(e) {
     console.log(`Trying to log in ${this.email}`);
+    this.email = this.email.toLowerCase();
     this.tweetService.login(this.email, this.password);
   }
 }
